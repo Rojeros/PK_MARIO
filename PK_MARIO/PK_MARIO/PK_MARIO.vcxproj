@@ -87,7 +87,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)externals\SDL-devel-1.2.14-VC8\SDL-1.2.14\SDL;$(SolutionDir)externals\SDL_mixer-devel-1.2.11-VC\SDL_mixer-1.2.11\SDL;$(SolutionDir)externals\SDL_image-1.2.10\SDL;$(SolutionDir)externals\boost_1_42_0\boost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)externals\SDL-devel-1.2.14-VC8\SDL-1.2.14\SDL;$(SolutionDir)externals\SDL_mixer-devel-1.2.11-VC\SDL_mixer-1.2.11\SDL;$(SolutionDir)externals\SDL_image-1.2.10\SDL;$(SolutionDir)externals\boost_1_42_0\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -147,13 +147,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SpriteConfig.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdAfx.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SpriteConfig.h" />
     <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="Types.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
