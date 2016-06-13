@@ -1,5 +1,4 @@
 #include "StdAfx.h"
-
 #include "Aabb.h"
 
 // czy prostok¹ty siê przecinaj¹

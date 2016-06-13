@@ -1,13 +1,12 @@
 #include "StdAfx.h"
+#include "App.h"
+#include "Engine.h"
 
+int main(int argc, char *argv[]) {
 
+	Engine::Get().Load();
 
-int main(/* int argc, char *argv[] */) {
-	std::cout << "      strza³ki lewo/prawo  -  poruszanie siê postaci¹\n"
-		<< "         strza³ka do góry  -  skok\n"
-		<< " przytrzymanie klawisza d  -  bieganie\n"
-		<< "   naciœniêcie klawisza s  -  strzelanie\n"
-		<< std::endl;
-
+	App app(600, 400, false);
+	app.Run();
 	return 0;
 }

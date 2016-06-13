@@ -1,5 +1,3 @@
-#include "StdAfx.h"
-
 #include "Game.h"
 #include "Engine.h"
 #include "Sprite.h"

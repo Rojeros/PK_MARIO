@@ -3,69 +3,76 @@
 #include "App.h"
 #include "Engine.h"
 
-
 void App::ProcessEvents() {
+	if (is_done) {
+		return;
+	}
+
 	// przyjrzyj zdarzenia
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
-		//         if (event.type == SDL_KEYDOWN && event.key.keysym.sym==SDLK_e) {
-
-		//             m_app_state.reset(new Show);
-		//             m_app_state->Init();
-		//             m_app_state->Start();
-		//             return;
-
-		//         } 
-		//         else if (event.type == SDL_KEYDOWN && event.key.keysym.sym==SDLK_q) {
-		//             exit(0);
-		//         }
-		//         else
 		if (event.type == SDL_VIDEORESIZE) {
 			Resize(event.resize.w, event.resize.h);
 		}
-		else {
-			m_app_state->ProcessEvents(event);
+		else if (event.type == SDL_QUIT) {
+			is_done = true;
+			break;
+		}
+		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
+			is_done = true;
+			break;
+		}
+		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_d) {
+			m_player->Run();
+		}
+		else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_d) {
+			m_player->StopRunning();
+		}
+		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_UP) {
+			m_player->Jump();
+		}
+		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_LEFT) {
+			m_player->GoLeft();
+		}
+		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RIGHT) {
+			m_player->GoRight();
+		}
+		else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_LEFT) {
+			m_player->StopLeft();
+		}
+		else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_RIGHT) {
+			m_player->StopRight();
 		}
 	}
 }
 
 void App::Run() {
 	// inicjalizacja okna
-	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
-	Resize(Engine::Get().GetWindow()->GetWidth(),
-		Engine::Get().GetWindow()->GetHeight());
+	SDL_Init(SDL_INIT_VIDEO);
+	Resize(m_window_width, m_window_height);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); // podwójne buforowanie
 
-	Engine::Get().GetSound()->LoadSounds();
-
-	// inicjalizacja OpenGL
+												 // inicjalizacja OpenGL
 	glClearColor(0, 0, 0, 0);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_ALPHA_TEST); // niewyœwietlanie przezroczystych fragmentów sprite'a
-	glAlphaFunc(GL_GEQUAL, 0.1f);
+	glAlphaFunc(GL_GEQUAL, 0.1);
 
-	// ³adowanie atlasu
-	const std::string atlas_filename = "data/tex.bmp";
-	Engine::Get().GetRenderer()->LoadTexture(atlas_filename);
-
-	m_app_state.reset(new MainMenu);
-	m_app_state->Init();
-	m_app_state->Start();
+	const std::string atlas_filename = "data/tex.bmp"; 
+	Engine& engine = Engine::Get();
+	engine.Load();
+	engine.GetRenderer()->LoadTexture(atlas_filename);
+	m_player->SetSprites(
+		SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_left"))),
+		SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_right"))),
+		SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_stop"))));
 
 	// pêtla g³ówna
+	is_done = false;
 	size_t last_ticks = SDL_GetTicks();
-	while (true) {
-		if (m_app_state->IsDone()) {
-			m_app_state = m_app_state->NextAppState();
-			if (!m_app_state) {
-				return;
-			}
-			m_app_state->Init();
-			m_app_state->Start();
-		}
-
+	while (!is_done) {
 		ProcessEvents();
 
 		// time update
@@ -79,26 +86,51 @@ void App::Run() {
 		}
 		Draw();
 	}
-
 	SDL_Quit();
 }
 
 void App::Update(double dt) {
-	m_app_state->Update(dt);
+	m_player->Update(dt);
 }
 
 void App::Draw() {
-	m_app_state->Draw();
-	glFlush();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();
+
+	if (m_player->MoveMap()) {
+		m_stored_player_pos_x = m_player->GetX();
+	}
+
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	{
+		glTranslatef(-(m_stored_player_pos_x * Engine::Get().GetRenderer()->GetTileWidth() - 0.45), 0, 0);
+		glMatrixMode(GL_MODELVIEW);
+
+		m_level_view.SetLevel(m_level, m_stored_player_pos_x);
+		m_level_view.Draw(m_stored_player_pos_x);
+
+		// narysuj postaæ gracza
+		m_player->Draw();
+
+	}
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+
+	SDL_GL_SwapBuffers();
 }
 
 void App::Resize(size_t width, size_t height) {
-	const bool is_fullscreen = Engine::Get().GetWindow()->IsFullscreen();
-	const int fullscreen_flag = is_fullscreen ? SDL_FULLSCREEN : 0;
-
-	m_screen = SDL_SetVideoMode(width, height, 32, SDL_OPENGL | SDL_RESIZABLE | SDL_HWSURFACE | fullscreen_flag);
+	m_screen = SDL_SetVideoMode(width, height, 32, SDL_OPENGL | SDL_RESIZABLE | SDL_HWSURFACE);
 	assert(m_screen && "problem z ustawieniem wideo");
+	m_window_width = width;
+	m_window_height = height;
 
-	Engine::Get().GetWindow()->SetSize(width, height);
-	Engine::Get().GetRenderer()->SetProjection(width, height);
+	glViewport(0, 0, static_cast<GLsizei> (width), static_cast<GLsizei> (height));
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(0, 1, 0, 1, -1, 10);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 }
