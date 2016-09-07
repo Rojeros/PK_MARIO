@@ -1,52 +1,66 @@
 #include "StdAfx.h"
 
 #include "App.h"
-#include "Engine.h"
 
-void App::ProcessEvents() {
-	if (is_done) {
+
+void App::ProcessEvents()
+{
+	if (is_done)
+	{
 		return;
 	}
 
 	// przyjrzyj zdarzenia
 	SDL_Event event;
-	while (SDL_PollEvent(&event)) {
-		if (event.type == SDL_VIDEORESIZE) {
+	while (SDL_PollEvent(&event))
+	{
+		if (event.type == SDL_VIDEORESIZE)
+		{
 			Resize(event.resize.w, event.resize.h);
 		}
-		else if (event.type == SDL_QUIT) {
+		else if (event.type == SDL_QUIT)
+		{
 			is_done = true;
 			break;
 		}
-		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
+		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
+		{
 			is_done = true;
 			break;
 		}
-		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_d) {
-			m_player->Run();
+		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_d)
+		{
+		//	m_player->Run();
 		}
-		else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_d) {
-			m_player->StopRunning();
+		else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_d)
+		{
+		//	m_player->StopRunning();
 		}
-		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_UP) {
-			m_player->Jump();
+		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_UP)
+		{
+		//	m_player->Jump();
 		}
-		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_LEFT) {
-			m_player->GoLeft();
+		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_LEFT)
+		{
+		//	m_player->GoLeft();
 		}
-		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RIGHT) {
-			m_player->GoRight();
+		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RIGHT)
+		{
+		//	m_player->GoRight();
 		}
-		else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_LEFT) {
-			m_player->StopLeft();
+		else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_LEFT)
+		{
+		//	m_player->StopLeft();
 		}
-		else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_RIGHT) {
-			m_player->StopRight();
+		else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_RIGHT)
+		{
+		//	m_player->StopRight();
 		}
 	}
 }
 
-void App::Run() {
+void App::Run()
+{
 	// inicjalizacja okna
 	SDL_Init(SDL_INIT_VIDEO);
 	Resize(m_window_width, m_window_height);
@@ -60,19 +74,20 @@ void App::Run() {
 	glEnable(GL_ALPHA_TEST); // niewyœwietlanie przezroczystych fragmentów sprite'a
 	glAlphaFunc(GL_GEQUAL, 0.1);
 
-	const std::string atlas_filename = "data/tex.bmp"; 
-	Engine& engine = Engine::Get();
-	engine.Load();
-	engine.GetRenderer()->LoadTexture(atlas_filename);
-	m_player->SetSprites(
-		SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_left"))),
-		SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_right"))),
-		SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_stop"))));
+	const std::string atlas_filename = "data/tex.bmp";
+	//Engine& engine = Engine::Get();
+//	engine.Load();
+	//engine.GetRenderer()->LoadTexture(atlas_filename);
+//	m_player->SetSprites(
+//		SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_left"))),
+//		SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_right"))),
+//		SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_stop"))));
 
-	// pêtla g³ówna
+	// main loop
 	is_done = false;
 	size_t last_ticks = SDL_GetTicks();
-	while (!is_done) {
+	while (!is_done)
+	{
 		ProcessEvents();
 
 		// time update
@@ -81,7 +96,8 @@ void App::Run() {
 		last_ticks = ticks;
 
 		// update & render
-		if (delta_time > 0) {
+		if (delta_time > 0)
+		{
 			Update(delta_time);
 		}
 		Draw();
@@ -89,31 +105,34 @@ void App::Run() {
 	SDL_Quit();
 }
 
-void App::Update(double dt) {
-	m_player->Update(dt);
+void App::Update(double dt)
+{
+//	m_player->Update(dt);
 }
 
-void App::Draw() {
+void App::Draw()
+{
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	if (m_player->MoveMap()) {
-		m_stored_player_pos_x = m_player->GetX();
-	}
+//	if (m_player->MoveMap())
+//	{
+//		m_stored_player_pos_x = m_player->GetX();
+//	}
 
 	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	{
-		glTranslatef(-(m_stored_player_pos_x * Engine::Get().GetRenderer()->GetTileWidth() - 0.45), 0, 0);
-		glMatrixMode(GL_MODELVIEW);
+//	glPushMatrix();
 
-		m_level_view.SetLevel(m_level, m_stored_player_pos_x);
-		m_level_view.Draw(m_stored_player_pos_x);
+	//{
+//		glTranslatef(-(m_stored_player_pos_x * Engine::Get().GetRenderer()->GetTileWidth() - 0.45), 0, 0);
+//		glMatrixMode(GL_MODELVIEW);
 
-		// narysuj postaæ gracza
-		m_player->Draw();
+//		m_level_view.SetLevel(m_level, m_stored_player_pos_x);
+//		m_level_view.Draw(m_stored_player_pos_x);
 
-	}
+//		m_player->Draw();
+
+//	}
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
@@ -121,9 +140,10 @@ void App::Draw() {
 	SDL_GL_SwapBuffers();
 }
 
-void App::Resize(size_t width, size_t height) {
+void App::Resize(size_t width, size_t height)
+{
 	m_screen = SDL_SetVideoMode(width, height, 32, SDL_OPENGL | SDL_RESIZABLE | SDL_HWSURFACE);
-	assert(m_screen && "problem z ustawieniem wideo");
+	assert(m_screen && "video error");
 	m_window_width = width;
 	m_window_height = height;
 

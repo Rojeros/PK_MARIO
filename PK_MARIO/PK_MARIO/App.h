@@ -1,46 +1,72 @@
 #include "StdAfx.h"
-#include "Player.h"
-#include "Level.h"
-#include "SpriteGrid.h"
-#include "Engine.h"
+#include "Field.h"
+//#include "Player.h"
+//#include "Level.h"
+//#include "SpriteGrid.h"
+//#include "Engine.h"
 
-class App {
+/// <summary>	Main window of Application </summary>
+class App
+{
 public:
+
+	/// <summary>	Constructor. </summary>
+	///
+	/// <param name="win_width">	  	Width of the window. </param>
+	/// <param name="win_height">	  	Height of the window. </param>
+	/// <param name="fullscreen_mode">	true to enable fullscreen mode, false to disable it. </param>
+
 	explicit App(size_t win_width, size_t win_height, bool fullscreen_mode) :
 		m_window_width(win_width),
 		m_window_height(win_height),
 		m_fullscreen(fullscreen_mode),
-		m_stored_player_pos_x(1.0) {
+		m_stored_player_pos_x(1.0)
+	{
 
-		m_level_view.StoreSprite(FT::PlatformLeftEnd, SpritePtr(new Sprite(Engine::Get().GetSpriteConfig()->Get("platform_left"))));
-		m_level_view.StoreSprite(FT::PlatformMidPart, SpritePtr(new Sprite(Engine::Get().GetSpriteConfig()->Get("platform_mid"))));
-		m_level_view.StoreSprite(FT::PlatformRightEnd, SpritePtr(new Sprite(Engine::Get().GetSpriteConfig()->Get("platform_right"))));
-
-		m_level.reset(new Level());
-		m_level->LoadFromFile("data/1.lvl");
-		m_player.reset(new Player(9, 5, m_level->GetWidth()));
+	
 	}
 
+	/// <summary>	Runs window. </summary>
 	void Run();
 
 private:
+
+	/// <summary>	Draws widow </summary>
 	void Draw();
+
+	/// <summary>	Updates the widnow </summary>
+	///
+	/// <param name="dt">	The delta. </param>
+
 	void Update(double dt);
+
+	/// <summary>	Resizes the window </summary>
+	///
+	/// <param name="width"> 	The width. </param>
+	/// <param name="height">	The height. </param>
+
 	void Resize(size_t width, size_t height);
+
+
+	/// <summary>	Process the events. </summary>
 	void ProcessEvents();
 
 private:
-	size_t m_window_width;   // szerokoœæ okna
-	size_t m_window_height;  // wysokoœæ okna
-	bool m_fullscreen;       // tryb pe³noekranowy
+
+
+	/// <summary>	Width of the window. </summary>
+	size_t m_window_width;
+	/// <summary>	Height of the window. </summary>
+	size_t m_window_height;
+	/// <summary>	true to fullscreen. </summary>
+	bool m_fullscreen;
+	/// <summary>	true if this object is done. </summary>
 	bool is_done;
+
+	/// <summary>	The screen. </summary>
 	SDL_Surface* m_screen;
 
-	PlayerPtr m_player;
-
-	LevelPtr m_level;
-	SpriteGrid m_level_view;
-
+	/// <summary>	The stored player position x coordinate. </summary>
 	double m_stored_player_pos_x;
 };
 
