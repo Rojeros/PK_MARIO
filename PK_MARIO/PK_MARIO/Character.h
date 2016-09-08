@@ -1,11 +1,12 @@
 #pragma once
 #include "StdAfx.h"
 #include "Field.h"
+#include "SpriteLoader.h"
 
 class Character :
-	public Field
+	public Field,public SpriteLoader
 {
-private:
+protected:
 	int hp;
 	double speed;
 	

@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "Field.h"
-//#include "Player.h"
+#include "Player.h"
+#include "Sprite.h"
 //#include "Level.h"
 //#include "SpriteGrid.h"
 //#include "Engine.h"
@@ -9,21 +10,24 @@
 class App
 {
 public:
-
+	Player * gracz;
 	/// <summary>	Constructor. </summary>
 	///
 	/// <param name="win_width">	  	Width of the window. </param>
 	/// <param name="win_height">	  	Height of the window. </param>
 	/// <param name="fullscreen_mode">	true to enable fullscreen mode, false to disable it. </param>
 
-	explicit App(size_t win_width, size_t win_height, bool fullscreen_mode) :
+	App(size_t win_width, size_t win_height, bool fullscreen_mode) :
 		m_window_width(win_width),
 		m_window_height(win_height),
 		m_fullscreen(fullscreen_mode),
 		m_stored_player_pos_x(1.0)
 	{
-
-	
+		gracz=new Player(8, 0, true, TYPES::Players, TYPES::Background, 10, 1);
+		SpriteData* cosik = new SpriteData(5, 0.2, 0, 4 * 32, 32, 32, true, TYPES::PlayerLayer);
+		Sprite * cos = new Sprite(*cosik, std::string("data\\tex.bmp"));
+		gracz->setSprite(*cos, "lewo");
+		//gracz = &osoba;
 	}
 
 	/// <summary>	Runs window. </summary>

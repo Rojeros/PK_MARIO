@@ -121,9 +121,9 @@ void App::Draw()
 //	}
 
 	glMatrixMode(GL_PROJECTION);
-//	glPushMatrix();
+	glPushMatrix();
 
-	//{
+	
 //		glTranslatef(-(m_stored_player_pos_x * Engine::Get().GetRenderer()->GetTileWidth() - 0.45), 0, 0);
 //		glMatrixMode(GL_MODELVIEW);
 
@@ -131,8 +131,8 @@ void App::Draw()
 //		m_level_view.Draw(m_stored_player_pos_x);
 
 //		m_player->Draw();
-
-//	}
+		gracz->draw();
+	
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);

@@ -13,7 +13,7 @@ public:
 	{
 	};
 	~Player();
-
+	void setSprite(Sprite&data, std::string name);
 	bool draw();
 	bool update();
 

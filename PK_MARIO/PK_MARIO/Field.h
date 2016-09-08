@@ -8,6 +8,7 @@ protected:
 	int x;
 	int y;
 	bool exist;
+
 	TYPES::DisplayLayer layer;
 	//powinna byæ jeszcze tekstura
 

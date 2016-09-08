@@ -1,7 +1,9 @@
 #pragma once
 #include "Field.h"
+#include "SpriteLoader.h"
+
 class Bonus :
-	public Field
+	public Field,public SpriteLoader
 {
 private:
 	TYPES::BonusType bonusType;

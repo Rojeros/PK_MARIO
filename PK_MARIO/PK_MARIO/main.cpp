@@ -5,7 +5,8 @@
 
 int main(int argc, char *argv[])
 {
-	Player osoba(8,0,true, TYPES::Players, TYPES::Background, 10, 1);
+	//SpriteData *cos=new SpriteData(5, 0.2, 0, 4 * 32, 32, 32, true, TYPES::PlayerLayer);
+	
 	//Engine::Get().Load();
 
 	App app(600, 400, false);
