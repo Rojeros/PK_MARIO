@@ -12,18 +12,18 @@ TYPES::FieldType Field::returnType()
 	return TYPES::FieldType();
 }
 
-void Field::setCoord(int x1,int y1)
+void Field::setCoord(float x1, float y1)
 {
 	x = x1;
 	y = y1;
 }
 
-int Field::get_x()
+float Field::get_x()
 {
 	return x;
 }
 
-int Field::get_y()
+float Field::get_y()
 {
 	return y;
 }

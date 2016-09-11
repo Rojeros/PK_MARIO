@@ -10,7 +10,7 @@
 class App
 {
 public:
-	Player * gracz;
+	Player * m_player;
 	/// <summary>	Constructor. </summary>
 	///
 	/// <param name="win_width">	  	Width of the window. </param>
@@ -23,15 +23,11 @@ public:
 		m_fullscreen(fullscreen_mode),
 		m_stored_player_pos_x(1.0)
 	{
-		
-		gracz=new Player(8, 0, true, TYPES::Players, TYPES::PlayerLayer, 10, 1);
-		SpriteData* cosik = new SpriteData(5, 0.2, 0, 4 * 32, 32, 32, true, TYPES::PlayerLayer);
-		Sprite * cos = new Sprite(*cosik, std::string("data\\tex3.png"));
-		gracz->setSprite(*cos, "lewo");
-		
-
-		
-		//gracz = &osoba;
+		// TODO: map size in last parameter!!!
+		m_player =new Player(0.1, 0.1, true, TYPES::Players, TYPES::PlayerLayer, 10, 1,100);
+		m_player->setSprite(Sprite( SpriteData(5, 0.2, 0, 4 * 32, 32, 32, true, TYPES::PlayerLayer), std::string("data\\tex3.png")), "player_right",TYPES::GoingRight);
+		m_player->setSprite(Sprite(SpriteData(5, 0.2, 0, 5 * 32, 32, 32,true, TYPES::PlayerLayer), std::string("data\\tex3.png")), "player_left", TYPES::GoingLeft);
+		m_player->setSprite(Sprite(SpriteData(1, 0.2, 0, 6 * 32, 32, 32, true, TYPES::PlayerLayer), std::string("data\\tex3.png")), "player_stop", TYPES::Standing);
 	}
 
 	/// <summary>	Runs window. </summary>

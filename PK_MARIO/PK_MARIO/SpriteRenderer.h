@@ -6,49 +6,31 @@
 class SpriteRenderer
 {
 public:
-	SpriteRenderer(std::string patch) :
-		m_tile_width(.05), m_tile_height(.05),filename(patch)
+	SpriteRenderer() :m_tile_width(.05), m_tile_height(.05)
 	{
 	}
 
-	double GetTileWidth() const
-	{
-		return m_tile_width;
-	}
-	double GetTileHeight() const
-	{
-		return m_tile_height;
-	}
+	void setFilename(std::string path);
+	double GetTileWidth();
+	double GetTileHeight();
 
-	size_t GetHorizontalTilesOnScreenCount() const
-	{
-		return 1.0 / m_tile_width + 0.5;
-	}
-	size_t GetVerticalTilesOnScreenCount()   const
-	{
-		return 1.0 / m_tile_height + 0.5;
-	}
+	size_t GetHorizontalTilesOnScreenCount();
+	size_t GetVerticalTilesOnScreenCount();
 
 	void SetTileSize(double width, double height);
 
 	void LoadTexture();
-	void DrawSprite(double tex_x, double tex_y, double tex_w, double tex_h, double pos_x, double pos_y,
-		double width, double height, TYPES::DisplayLayer layer);
-	SpriteRenderer::SpriteRenderer(const SpriteRenderer & fOsoba)
-	{
-		 m_texture= fOsoba.m_texture;
-		 m_tile_width= fOsoba.m_tile_width;
-		 m_tile_height= fOsoba.m_tile_height;
-		 filename= fOsoba.filename;
-	}
+	void DrawSprite(double tex_x, double tex_y, double tex_w, double tex_h, double pos_x, double pos_y,double width, double height, TYPES::DisplayLayer layer);
+
 
 protected:
 	static GLuint  m_texture;
+	static std::string filename;
 	double m_tile_width;
 	double m_tile_height;
-	std::string filename;
+
+
 };
 
-typedef boost::shared_ptr<SpriteRenderer> RendererPtr;
 
 #endif /* RENDERER_H_ */

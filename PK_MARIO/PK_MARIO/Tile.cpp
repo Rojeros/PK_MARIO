@@ -11,7 +11,7 @@ bool Tile::draw()
 	return false;
 }
 
-bool Tile::update()
+void Tile::Update(double dt)
 {
-	return false;
 }
+

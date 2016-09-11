@@ -10,8 +10,7 @@ public:
 	bool Contains(std::string name) ;
 	void Insert(std::string name, Sprite& data);
 protected:
-	std::map<std::string, Sprite> m_data;
+	static std::map<std::string, Sprite> m_data;
 
 };
-typedef boost::shared_ptr<SpriteLoader> SpriteLoaderPtr;
 

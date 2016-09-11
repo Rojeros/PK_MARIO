@@ -1,8 +1,29 @@
 #include "StdAfx.h"
 #include "SpriteRenderer.h"
 GLuint SpriteRenderer::m_texture;
+std::string SpriteRenderer::filename;
 
-GLuint GLobalTexture;
+void SpriteRenderer::setFilename(std::string path)
+{
+	filename = path;
+}
+
+double SpriteRenderer::GetTileWidth()
+{
+	return m_tile_width;
+}
+double SpriteRenderer::GetTileHeight()
+{
+	return m_tile_height;
+}
+size_t SpriteRenderer::GetHorizontalTilesOnScreenCount()
+{
+	return 1.0 / m_tile_width + 0.5;
+}
+size_t SpriteRenderer::GetVerticalTilesOnScreenCount()
+{
+	return 1.0 / m_tile_height + 0.5;
+}
 void SpriteRenderer::SetTileSize(double width, double height)
 {
 	m_tile_width = width;
@@ -24,7 +45,7 @@ void SpriteRenderer::LoadTexture()
 	const int height = surface->h;
 	if (((width & (width - 1)) != 0) || ((height & (height - 1)) != 0))
 	{
-		std::cerr << "Picture " + filename + " have inccorect size: " << width << "x"
+		std::cerr << "Picture " + filename+ " have inccorect size: " << width << "x"
 			<< height << "\n";
 		exit(1);
 	}

@@ -29,31 +29,31 @@ void App::ProcessEvents()
 		}
 		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_d)
 		{
-		//	m_player->Run();
+			m_player->Run();
 		}
 		else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_d)
 		{
-		//	m_player->StopRunning();
+			m_player->StopRunning();
 		}
 		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_UP)
 		{
-		//	m_player->Jump();
+			m_player->Jump();
 		}
 		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_LEFT)
 		{
-		//	m_player->GoLeft();
+			m_player->GoLeft();
 		}
 		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RIGHT)
 		{
-		//	m_player->GoRight();
+			m_player->GoRight();
 		}
 		else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_LEFT)
 		{
-		//	m_player->StopLeft();
+			m_player->StopLeft();
 		}
 		else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_RIGHT)
 		{
-		//	m_player->StopRight();
+			m_player->StopRight();
 		}
 	}
 }
@@ -107,7 +107,7 @@ void App::Run()
 
 void App::Update(double dt)
 {
-	gracz->update(dt);
+	m_player->Update(dt);
 //	m_player->Update(dt);
 }
 
@@ -133,7 +133,7 @@ void App::Draw()
 
 		//		m_player->Draw();
 
-		gracz->draw();
+	m_player->draw();
 //	}
 //	glMatrixMode(GL_PROJECTION);
 //glPopMatrix();

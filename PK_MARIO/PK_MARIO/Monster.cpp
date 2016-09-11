@@ -26,7 +26,8 @@ bool Monster::draw()
 	return false;
 }
 
-bool Monster::update()
+void Monster::Update(double dt)
 {
-	return false;
 }
+
+

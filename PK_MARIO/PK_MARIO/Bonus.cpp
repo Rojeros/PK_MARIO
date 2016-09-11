@@ -20,7 +20,7 @@ bool Bonus::draw()
 	return false;
 }
 
-bool Bonus::update()
+void Bonus::Update(double dt)
 {
-	return false;
 }
+

@@ -10,10 +10,10 @@ bool Character::draw()
 	return false;
 }
 
-bool Character::update()
+void Character::Update(double dt)
 {
 	std::cout << "Error, update Character";
-	return false;
+
 }
 
 Character::~Character()

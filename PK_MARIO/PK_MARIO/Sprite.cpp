@@ -4,7 +4,8 @@
 Sprite::Sprite(SpriteData&data, std::string path1) :
 	 m_data(data),m_current_frame(0), m_current_frame_duration(0.0)
 {
-	m_renderer.reset(new SpriteRenderer(path1));
+	m_renderer.reset(new SpriteRenderer());
+	m_renderer->setFilename(path1);
 }
 
 void Sprite::SetCurrentFrame(size_t frame_num)

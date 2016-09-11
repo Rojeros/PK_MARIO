@@ -2,6 +2,7 @@
 #include "SpriteLoader.h"
 #include "SpriteData.h"
 #include "Types.h"
+std::map<std::string, Sprite> SpriteLoader:: m_data;
 
 
 SpriteLoader::SpriteLoader()

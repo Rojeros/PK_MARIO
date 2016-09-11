@@ -8,8 +8,7 @@ class Sprite
 protected:
 
 	/// <summary>	The renderer. </summary>
-	
-	std::string path;
+
 	size_t m_current_frame;           // numer aktualnej klatki
 	double m_current_frame_duration;  // czas trwania aktualnej klatki
 
@@ -23,7 +22,8 @@ public:
 	void DrawCurrentFrame(double x, double y, double width, double height);
 	void Load(std::string path)
 	{
-		m_renderer.reset(new SpriteRenderer(path));
+		m_renderer.reset(new SpriteRenderer());
+		m_renderer->setFilename(path);
 	}
 
 
@@ -38,6 +38,5 @@ public:
 
 };
 
-typedef boost::shared_ptr<Sprite> SpritePtr;
 
 #endif /* SPRITE_H_ */
