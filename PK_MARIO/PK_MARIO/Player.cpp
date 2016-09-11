@@ -24,16 +24,20 @@ Player::~Player()
 void Player::setSprite(Sprite & data, std::string name)
 {
 	SpriteLoader::Insert(name, data);
-	SpriteLoader::Get(name)->m_renderer.LoadTexture();
+//	::LoadTexture("data/fireball.png");
+	//this->Get(name)->m_renderer.setTexture(this->Get(name)->m_renderer.LoadTexture());
+
+
 }
 
 bool Player::draw()
 {
-	SpriteLoader::Get("lewo")->DrawCurrentFrame(0.5, 0.5, 0.2, 02);
+	SpriteLoader::Get("lewo")->DrawCurrentFrame(0, 0, 1, 1);
 	return false;
 }
 
-bool Player::update()
+bool Player::update(double dt)
 {
+	SpriteLoader::Get("lewo")->Update(dt);
 	return false;
 }

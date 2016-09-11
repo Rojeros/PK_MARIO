@@ -2,9 +2,9 @@
 #include "Sprite.h"
 
 Sprite::Sprite(SpriteData&data, std::string path1) :
-	 m_data(data),m_renderer(path1),m_current_frame(0), m_current_frame_duration(0.0)
+	 m_data(data),m_current_frame(0), m_current_frame_duration(0.0)
 {
-
+	m_renderer.reset(new SpriteRenderer(path1));
 }
 
 void Sprite::SetCurrentFrame(size_t frame_num)
@@ -41,7 +41,7 @@ void Sprite::Update(double dt)
 void Sprite::DrawCurrentFrame(double x, double y, double width, double height)
 {
 
-	GetRenderer()->DrawSprite(
+	m_renderer->DrawSprite(
 		m_data.left + m_data.width * m_current_frame, m_data.bottom,
 		m_data.width, m_data.height, x, y, width, height, m_data.layer);
 }

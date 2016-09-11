@@ -23,10 +23,14 @@ public:
 		m_fullscreen(fullscreen_mode),
 		m_stored_player_pos_x(1.0)
 	{
-		gracz=new Player(8, 0, true, TYPES::Players, TYPES::Background, 10, 1);
+		
+		gracz=new Player(8, 0, true, TYPES::Players, TYPES::PlayerLayer, 10, 1);
 		SpriteData* cosik = new SpriteData(5, 0.2, 0, 4 * 32, 32, 32, true, TYPES::PlayerLayer);
-		Sprite * cos = new Sprite(*cosik, std::string("data\\tex.bmp"));
+		Sprite * cos = new Sprite(*cosik, std::string("data\\tex3.png"));
 		gracz->setSprite(*cos, "lewo");
+		
+
+		
 		//gracz = &osoba;
 	}
 
@@ -54,9 +58,6 @@ private:
 
 	/// <summary>	Process the events. </summary>
 	void ProcessEvents();
-
-private:
-
 
 	/// <summary>	Width of the window. </summary>
 	size_t m_window_width;

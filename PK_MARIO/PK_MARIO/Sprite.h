@@ -14,7 +14,7 @@ protected:
 	double m_current_frame_duration;  // czas trwania aktualnej klatki
 
 public:
-	SpriteRenderer m_renderer;
+	boost::shared_ptr <SpriteRenderer> m_renderer;
 	SpriteData m_data;
 	Sprite(SpriteData&data,std::string path1);
 
@@ -23,7 +23,7 @@ public:
 	void DrawCurrentFrame(double x, double y, double width, double height);
 	void Load(std::string path)
 	{
-	//	m_renderer.reset(new SpriteRenderer(path));
+		m_renderer.reset(new SpriteRenderer(path));
 	}
 
 
@@ -31,9 +31,9 @@ public:
 	///
 	/// <returns>	The renderer. </returns>
 
-	SpriteRenderer * GetRenderer()
+	boost::shared_ptr <SpriteRenderer> GetRenderer()
 	{
-		return &m_renderer;
+		return m_renderer;
 	}
 
 };

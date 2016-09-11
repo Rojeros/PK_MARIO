@@ -3,7 +3,6 @@
 
 #include "StdAfx.h"
 #include "Types.h"
-
 class SpriteRenderer
 {
 public:
@@ -35,9 +34,16 @@ public:
 	void LoadTexture();
 	void DrawSprite(double tex_x, double tex_y, double tex_w, double tex_h, double pos_x, double pos_y,
 		double width, double height, TYPES::DisplayLayer layer);
+	SpriteRenderer::SpriteRenderer(const SpriteRenderer & fOsoba)
+	{
+		 m_texture= fOsoba.m_texture;
+		 m_tile_width= fOsoba.m_tile_width;
+		 m_tile_height= fOsoba.m_tile_height;
+		 filename= fOsoba.filename;
+	}
 
 protected:
-	GLuint m_texture;
+	static GLuint  m_texture;
 	double m_tile_width;
 	double m_tile_height;
 	std::string filename;

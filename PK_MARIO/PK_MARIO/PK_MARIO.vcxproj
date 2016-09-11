@@ -87,15 +87,16 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)externals\SDL-devel-1.2.14-VC8\SDL-1.2.14\SDL;$(SolutionDir)externals\SDL_mixer-devel-1.2.11-VC\SDL_mixer-1.2.11\SDL;$(SolutionDir)externals\SDL_image-1.2.10\SDL;$(SolutionDir)externals\boost_1_42_0\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)externals\SDL-devel-1.2.14-VC8\SDL-1.2.14\SDL;$(SolutionDir)externals\SDL_mixer-devel-1.2.11-VC\SDL_mixer-1.2.11\SDL;$(SolutionDir)externals\SDL_image-1.2.10\SDL;$(SolutionDir)externals\freeImage;$(SolutionDir)externals\boost_1_42_0\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)externals\SDL-devel-1.2.14-VC8\SDL-1.2.14\lib;$(SolutionDir)externals\SDL_mixer-devel-1.2.11-VC\SDL_mixer-1.2.11\lib;$(SolutionDir)externals\SDL_image-1.2.10\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Opengl32.lib;glu32.lib;SDLmain.lib;SDL.lib;SDL_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Opengl32.lib;FreeImage.lib;glu32.lib;SDLmain.lib;SDL.lib;SDL_image.lib;SDL_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImageHasSafeExceptionHandlers>true</ImageHasSafeExceptionHandlers>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <AdditionalLibraryDirectories>$(SolutionDir)externals\SDL-devel-1.2.14-VC8\SDL-1.2.14\lib;$(SolutionDir)externals\SDL_mixer-devel-1.2.11-VC\SDL_mixer-1.2.11\lib;$(SolutionDir)externals\SDL_image-1.2.10\lib;$(SolutionDir)externals\freeImage\freeImage;$(SolutionDir)externals\boost_1_42_0\;%(AdditionalIncludeDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

@@ -2,7 +2,6 @@
 
 #include "App.h"
 
-
 void App::ProcessEvents()
 {
 	if (is_done)
@@ -59,6 +58,7 @@ void App::ProcessEvents()
 	}
 }
 
+
 void App::Run()
 {
 	// inicjalizacja okna
@@ -74,7 +74,7 @@ void App::Run()
 	glEnable(GL_ALPHA_TEST); // niewyœwietlanie przezroczystych fragmentów sprite'a
 	glAlphaFunc(GL_GEQUAL, 0.1);
 
-	const std::string atlas_filename = "data/tex.bmp";
+	//const std::string atlas_filename = "data/tex.png";
 	//Engine& engine = Engine::Get();
 //	engine.Load();
 	//engine.GetRenderer()->LoadTexture(atlas_filename);
@@ -107,6 +107,7 @@ void App::Run()
 
 void App::Update(double dt)
 {
+	gracz->update(dt);
 //	m_player->Update(dt);
 }
 
@@ -114,28 +115,29 @@ void App::Draw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
-
+	
 //	if (m_player->MoveMap())
 //	{
 //		m_stored_player_pos_x = m_player->GetX();
 //	}
 
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
+	//glMatrixMode(GL_PROJECTION);
+//	glPushMatrix();
+	//{
 
-	
-//		glTranslatef(-(m_stored_player_pos_x * Engine::Get().GetRenderer()->GetTileWidth() - 0.45), 0, 0);
+		//		glTranslatef(-(m_stored_player_pos_x * Engine::Get().GetRenderer()->GetTileWidth() - 0.45), 0, 0);
 //		glMatrixMode(GL_MODELVIEW);
 
-//		m_level_view.SetLevel(m_level, m_stored_player_pos_x);
-//		m_level_view.Draw(m_stored_player_pos_x);
+		//		m_level_view.SetLevel(m_level, m_stored_player_pos_x);
+		//		m_level_view.Draw(m_stored_player_pos_x);
 
-//		m_player->Draw();
+		//		m_player->Draw();
+
 		gracz->draw();
-	
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
+//	}
+//	glMatrixMode(GL_PROJECTION);
+//glPopMatrix();
+//	glMatrixMode(GL_MODELVIEW);
 
 	SDL_GL_SwapBuffers();
 }

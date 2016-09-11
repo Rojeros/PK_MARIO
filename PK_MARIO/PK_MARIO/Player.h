@@ -13,9 +13,9 @@ public:
 	{
 	};
 	~Player();
-	void setSprite(Sprite&data, std::string name);
+	void setSprite(Sprite & data, std::string name);
 	bool draw();
-	bool update();
+	bool update(double dt);
 
 };
 
