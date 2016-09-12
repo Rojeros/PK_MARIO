@@ -13,10 +13,26 @@
 class GameContener
 {
 private:
-	std::vector<std::vector<TYPES::FieldType> > map;
+	std::vector<std::vector<Tile> > map;
+	std::vector< std::vector< Tile *> > m_grid;
+	size_t m_width;
+	size_t m_height;
+	size_t grid_width;
+	size_t grid_height;
 
 public:
-	GameContener();
+	
+	GameContener() : m_width(0),m_height(0) 
+	{
+	};
+
+	void LoadLevelFromFile(const std::string& filename);
+	TYPES::FieldType Field(size_t x, size_t y);
+	void SetLevel(double dx);
+	void DrawLevel(double dx);
+
+	size_t GetWidth() const { return m_width; }
+	size_t GetHeight() const { return m_height; }
 	~GameContener();
 };
 

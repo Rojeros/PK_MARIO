@@ -2,6 +2,8 @@
 #include "SpriteRenderer.h"
 GLuint SpriteRenderer::m_texture;
 std::string SpriteRenderer::filename;
+double SpriteRenderer::m_tile_width = 0.05;
+double SpriteRenderer::m_tile_height = 0.05;
 
 void SpriteRenderer::setFilename(std::string path)
 {
@@ -86,7 +88,7 @@ void SpriteRenderer::DrawSprite(double tex_x, double tex_y, double tex_w, double
 	if (m_texture <= 0)
 		LoadTexture();
 
-	glBindTexture(GL_TEXTURE_2D, m_texture);
+//	glBindTexture(GL_TEXTURE_2D, m_texture);
 
 	const double texture_w = 1024.0;
 	const double texture_h = 1024.0;
@@ -100,22 +102,22 @@ void SpriteRenderer::DrawSprite(double tex_x, double tex_y, double tex_w, double
 	* Obrazek ³adowany jest do góry nogami, wiêc punkt (0,0) jest w lewym górnym rogu.
 	* St¹d wynika, ¿e w powy¿szym wzorze top jest poni¿ej bottom
 	*/
-	//glColor3f(1, 1, 1);
-//	glPushMatrix();
+	glColor3f(1, 1, 1);
+	glPushMatrix();
 
-//	{
-//		glTranslatef(0, 0, -static_cast<double> (layer));
-	//	glBindTexture(GL_TEXTURE_2D, m_texture);
+	{
+		glTranslatef(0, 0, -static_cast<double> (layer));
+		glBindTexture(GL_TEXTURE_2D, m_texture);
 		glBegin(GL_QUADS);
-		glColor4f(1, 1, 1,0.5);
-	//	{
+	//	glColor4f(1, 1, 1,0.5);
+		{
 			glTexCoord2f(right, top);    glVertex2f(pos_x + width, pos_y + height);
 			glTexCoord2f(left, top);     glVertex2f(pos_x, pos_y + height);
 			glTexCoord2f(left, bottom);  glVertex2f(pos_x, pos_y);
 			glTexCoord2f(right, bottom); glVertex2f(pos_x + width, pos_y);
-	//	}
+		}
 		glEnd();
 		glDisable(GL_BLEND);
-//	}
+	}
 	glPopMatrix();
 }

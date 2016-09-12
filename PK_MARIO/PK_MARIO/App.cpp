@@ -116,28 +116,23 @@ void App::Draw()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 	
-//	if (m_player->MoveMap())
-//	{
-//		m_stored_player_pos_x = m_player->GetX();
-//	}
+	if (m_player->MoveMap()) {
+		m_stored_player_pos_x = m_player->get_x();
+	}
 
-	//glMatrixMode(GL_PROJECTION);
-//	glPushMatrix();
-	//{
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	{
+	glTranslatef(-(m_stored_player_pos_x*SpriteRenderer::GetTileWidth() - 0.45),0, 0);
+	glMatrixMode(GL_MODELVIEW);
 
-		//		glTranslatef(-(m_stored_player_pos_x * Engine::Get().GetRenderer()->GetTileWidth() - 0.45), 0, 0);
-//		glMatrixMode(GL_MODELVIEW);
-
-		//		m_level_view.SetLevel(m_level, m_stored_player_pos_x);
-		//		m_level_view.Draw(m_stored_player_pos_x);
-
-		//		m_player->Draw();
-
+	game->SetLevel(m_stored_player_pos_x);
+	game->DrawLevel(m_stored_player_pos_x);
 	m_player->draw();
-//	}
-//	glMatrixMode(GL_PROJECTION);
-//glPopMatrix();
-//	glMatrixMode(GL_MODELVIEW);
+	}
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
 
 	SDL_GL_SwapBuffers();
 }

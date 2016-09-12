@@ -41,16 +41,11 @@ void Player::Update(double dt)
 		x = next_x;
 	}
 
-	// nie mo¿na wyjœæ poza mapê
-	if (x < 0)
+	if (x > m_max_x_pos) 
 	{
-		x = 0; // nie mo¿na wyjœæ za pocz¹tek mapy
+		m_max_x_pos = x;
 	}
-	else if (x > m_level_width - 1)
-	{
-		x = m_level_width - 1; // nie mo¿na wyjœæ za ostatni kafel mapy
-	}
-
+	const size_t half_screen_tiles_count =(SpriteRenderer::GetHorizontalTilesOnScreenCount() - 1) / 2;
 
 
 	// ustal stan ruchu gracza na podstawie prêdkoœci
@@ -67,7 +62,7 @@ void Player::Update(double dt)
 	{
 		m_state = TYPES::GoingLeft;
 	}
-
+	std::cout << x << "\t" << y << "\n";
 	// uaktualnij animacjê
 	switch (m_state)
 	{

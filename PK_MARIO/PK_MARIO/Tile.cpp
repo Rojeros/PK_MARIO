@@ -6,9 +6,14 @@ Tile::~Tile()
 {
 }
 
+TYPES::FieldType Tile::GetType()
+{
+	return type;
+}
+
 bool Tile::draw()
 {
-	return false;
+	return true;
 }
 
 void Tile::Update(double dt)

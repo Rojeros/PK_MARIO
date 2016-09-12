@@ -51,8 +51,9 @@ private:
 	bool move(int direction);
 	bool jump();
 	bool fire();
+	double m_max_x_pos;
 public:
-	Player(float x1, float y1, bool exist1, TYPES::FieldType type1, TYPES::DisplayLayer layer1, int hp1, double speed1,size_t level_width) :
+	Player(float x1, float y1, bool exist1, TYPES::FieldType type1, TYPES::DisplayLayer layer1, int hp1, double speed1, size_t level_width) :
 		Character::Character(x1, y1, exist1, type1, layer1, hp1, speed1), m_state(TYPES::Standing),
 		m_vx(0.0),
 		m_vy(0),
@@ -62,7 +63,8 @@ public:
 		m_level_width(level_width),
 		m_is_on_ground(true),
 		m_can_go_left(true),
-		m_can_go_right(true)
+		m_can_go_right(true),
+		m_max_x_pos(x)
 	{
 		SetDefaultMoving();
 	};
@@ -189,7 +191,12 @@ public:
 	}
 
 
-
+	bool Player::MoveMap() {
+		const size_t screen_tiles_count =SpriteRenderer().GetHorizontalTilesOnScreenCount();
+		const size_t half_screen_tiles_count = screen_tiles_count / 2;
+		
+		return( (x > half_screen_tiles_count-1) && (x < ((m_level_width-1) - half_screen_tiles_count)));
+	}
 
 	~Player();
 	void setSprite(Sprite & data, std::string name,TYPES::PlayerState state);
