@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-
+#include "HallOfFame.h"
 #include "App.h"
 
 void App::ProcessEvents()
@@ -29,31 +29,31 @@ void App::ProcessEvents()
 		}
 		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_d)
 		{
-			m_player->Run();
+			game->GetPLayer()->Run();
 		}
 		else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_d)
 		{
-			m_player->StopRunning();
+			game->GetPLayer()->StopRunning();
 		}
 		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_UP)
 		{
-			m_player->Jump();
+			game->GetPLayer()->Jump();
 		}
 		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_LEFT)
 		{
-			m_player->GoLeft();
+			game->GetPLayer()->GoLeft();
 		}
 		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RIGHT)
 		{
-			m_player->GoRight();
+			game->GetPLayer()->GoRight();
 		}
 		else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_LEFT)
 		{
-			m_player->StopLeft();
+			game->GetPLayer()->StopLeft();
 		}
 		else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_RIGHT)
 		{
-			m_player->StopRight();
+			game->GetPLayer()->StopRight();
 		}
 	}
 }
@@ -84,6 +84,7 @@ void App::Run()
 //		SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_stop"))));
 
 	// main loop
+	HallOfFame hof;
 	is_done = false;
 	size_t last_ticks = SDL_GetTicks();
 	while (!is_done)
@@ -107,34 +108,13 @@ void App::Run()
 
 void App::Update(double dt)
 {
-	m_player->Update(dt);
+	game->UpdateScene(dt);
 //	m_player->Update(dt);
 }
 
 void App::Draw()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity();
-	
-	if (m_player->MoveMap()) {
-		m_stored_player_pos_x = m_player->get_x();
-	}
-
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	{
-	glTranslatef(-(m_stored_player_pos_x*SpriteRenderer::GetTileWidth() - 0.45),0, 0);
-	glMatrixMode(GL_MODELVIEW);
-
-	game->SetLevel(m_stored_player_pos_x);
-	game->DrawLevel(m_stored_player_pos_x);
-	m_player->draw();
-	}
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
-
-	SDL_GL_SwapBuffers();
+	game->DrawScene();
 }
 
 void App::Resize(size_t width, size_t height)
@@ -144,10 +124,5 @@ void App::Resize(size_t width, size_t height)
 	m_window_width = width;
 	m_window_height = height;
 
-	glViewport(0, 0, static_cast<GLsizei> (width), static_cast<GLsizei> (height));
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0, 1, 0, 1, -1, 10);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+	SpriteRenderer::SetProjection(width, height);
 }

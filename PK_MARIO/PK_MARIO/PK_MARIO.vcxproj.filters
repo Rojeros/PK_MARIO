@@ -63,6 +63,18 @@
     <ClCompile Include="SpriteRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HallOfFame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreSubmit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Collisions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdAfx.h">
@@ -106,6 +118,18 @@
     </ClInclude>
     <ClInclude Include="SpriteRenderer.h">
       <Filter>Header Files\sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HallOfFame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreSubmit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Collisions.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

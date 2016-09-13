@@ -14,18 +14,18 @@ TYPES::FieldType Field::returnType()
 
 void Field::setCoord(float x1, float y1)
 {
-	x = x1;
-	y = y1;
+	m_x = x1;
+	m_y = y1;
 }
 
 float Field::get_x()
 {
-	return x;
+	return m_x;
 }
 
 float Field::get_y()
 {
-	return y;
+	return m_y;
 }
 
 bool Field::isExist()

@@ -3,6 +3,16 @@
 #include "Tile.h"
 
 
+bool GameContener::IsAnyFieldAboveMe(double x, double y)
+{
+	if ((map[(int)x][(int)y + 1].GetType() != TYPES::None) ||
+		(map[(int)x - 1][(int)y + 1].GetType() != TYPES::None) ||
+		(map[(int)x + 1][(int)y + 1].GetType() != TYPES::None));
+	//Collisions box(x, y, x + SpriteRenderer::GetTileWidth(), y + SpriteRenderer::GetTileHeight());
+	//box.IsOver()
+	return true;
+}
+
 void GameContener::LoadLevelFromFile(const std::string & filename)
 {
 	std::ifstream lvl(filename.c_str());
@@ -66,6 +76,21 @@ void GameContener::SetLevel( double dx)
 	}
 	}
 
+void GameContener::SetPlayer()
+{
+	std::string platformleft = "PlatformLeftEnd", platformmid = "PlatformMidPart", platformright = "PlatformRightEnd";
+	m_player = new Player(9, 5, true, TYPES::Players, TYPES::PlayerLayer,4, GetWidth());
+	m_player->setSprite(Sprite(SpriteData(5, 0.2, 0, 4 * 32, 32, 32, true, TYPES::PlayerLayer), std::string("data\\tex3.png")), "player_right", TYPES::GoRight);
+	m_player->setSprite(Sprite(SpriteData(5, 0.2, 0, 5 * 32, 32, 32, true, TYPES::PlayerLayer), std::string("data\\tex3.png")), "player_left", TYPES::GoLeft);
+	m_player->setSprite(Sprite(SpriteData(1, 0.2, 0, 6 * 32, 32, 32, true, TYPES::PlayerLayer), std::string("data\\tex3.png")), "player_stop", TYPES::Stand);
+	m_player->Insert(platformleft, Sprite(SpriteData(1, 1, 0, 1 * 32, 32, 32, true, TYPES::Foreground), std::string("data\\tex3.png")));
+	m_player->Insert(platformmid, Sprite(SpriteData(1, 1, 0, 2 * 32, 32, 32, true, TYPES::Foreground), std::string("data\\tex3.png")));
+	m_player->Insert(platformright, Sprite(SpriteData(1, 1, 0, 3 * 32, 32, 32, true, TYPES::Foreground), std::string("data\\tex3.png")));
+
+	m_stored_player_pos_x = m_player->get_x();
+	
+}
+
 void GameContener::DrawLevel(double dx)
 {
 	std::string platformleft = "PlatformLeftEnd", platformmid = "PlatformMidPart", platformright = "PlatformRightEnd";
@@ -118,6 +143,40 @@ void GameContener::DrawLevel(double dx)
 	glPopMatrix();
 }
 
-GameContener::~GameContener()
+void GameContener::DrawScene()
 {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();
+
+	if (m_player->MoveMap()) {
+		m_stored_player_pos_x = m_player->get_x();
+	}
+
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	{
+		glTranslatef(-(m_stored_player_pos_x*SpriteRenderer::GetTileWidth() - 0.45), 0, 0);
+		glMatrixMode(GL_MODELVIEW);
+
+		SetLevel(m_stored_player_pos_x);
+		DrawLevel(m_stored_player_pos_x);
+		m_player->Draw();
+		t.DrawText("witaj swiecie", 0.3, 0.5);
+	}
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+
+	SDL_GL_SwapBuffers();
+}
+
+void GameContener::UpdateScene(double dt)
+{
+	m_player->SetDefaultMovement();
+	m_player->Update(dt);
+}
+
+Player * GameContener::GetPLayer()
+{
+	return m_player;
 }

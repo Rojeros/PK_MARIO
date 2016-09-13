@@ -11,9 +11,9 @@ TYPES::FieldType Tile::GetType()
 	return type;
 }
 
-bool Tile::draw()
+void Tile::Draw()
 {
-	return true;
+	
 }
 
 void Tile::Update(double dt)

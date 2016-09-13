@@ -6,6 +6,8 @@
 #include "Character.h"
 #include "Monster.h"
 #include "Player.h"
+#include "Text.h"
+#include "Collisions.h"
 
 #include <list>
 #include <vector>
@@ -20,19 +22,36 @@ private:
 	size_t grid_width;
 	size_t grid_height;
 
+	Player * m_player;
+	Text t;
+	/// <summary>	The stored player position x coordinate. </summary>
+	double m_stored_player_pos_x;
+
+	bool IsAnyFieldAboveMe(double x, double y);
+	bool IsAnyFieldOnLeft(double x, double y) const;
+	bool IsAnyFieldOnRight(double x, double y) const;
+	bool DoFieldsEndOnLeft(double x, double y) const;
+	bool DoFieldsEndOnRight(double x, double y) const;
+
 public:
 	
-	GameContener() : m_width(0),m_height(0) 
+	GameContener() : m_width(0),m_height(0) ,	m_stored_player_pos_x(1.0)
 	{
 	};
 
 	void LoadLevelFromFile(const std::string& filename);
 	TYPES::FieldType Field(size_t x, size_t y);
 	void SetLevel(double dx);
+	void SetPlayer();
 	void DrawLevel(double dx);
-
+	void DrawScene();
+	void UpdateScene(double dt);
+	Player * GetPLayer();
 	size_t GetWidth() const { return m_width; }
 	size_t GetHeight() const { return m_height; }
-	~GameContener();
+
+	~GameContener() {
+		delete m_player;
+	};
 };
 

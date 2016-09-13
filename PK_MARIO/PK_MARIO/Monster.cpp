@@ -21,9 +21,8 @@ Monster::~Monster()
 {
 }
 
-bool Monster::draw()
+void Monster::Draw()
 {
-	return false;
 }
 
 void Monster::Update(double dt)

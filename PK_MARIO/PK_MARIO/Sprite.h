@@ -3,6 +3,7 @@
 #include "StdAfx.h"
 #include "SpriteData.h"
 #include "SpriteRenderer.h"
+#include "Text.h"
 class Sprite
 {
 protected:

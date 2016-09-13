@@ -5,7 +5,15 @@
 namespace  TYPES
 {
 
-	enum PlayerState
+		enum PlayerState {
+			Stand,
+			GoLeft,
+			GoRight,
+			TurnLeft,   // postaæ zwrócona w lewo
+			TurnRight   // postaæ zwrócona w prawo
+		};
+	
+	enum CharacterState
 	{
 		Standing,
 		GoingLeft,

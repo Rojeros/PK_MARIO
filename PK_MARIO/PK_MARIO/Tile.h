@@ -12,7 +12,7 @@ public:
 	{};
 	~Tile();
 	TYPES::FieldType GetType();
-	bool draw();
+	void Draw();
 	
 	void Update(double dt);
 };

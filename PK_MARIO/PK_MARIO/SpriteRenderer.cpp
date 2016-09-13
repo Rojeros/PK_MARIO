@@ -26,6 +26,40 @@ size_t SpriteRenderer::GetVerticalTilesOnScreenCount()
 {
 	return 1.0 / m_tile_height + 0.5;
 }
+void SpriteRenderer::SetProjection(size_t width, size_t height)
+{
+	glViewport(0, 0,
+		static_cast<GLsizei> (width),
+		static_cast<GLsizei> (height));
+	ResetProjection();
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+}
+void SpriteRenderer::ResetProjection()
+{
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(0, 1, 0, 1, -1, 10);
+}
+void SpriteRenderer::DrawQuad(double min_x, double min_y, double max_x, double max_y, double r, double g, double b, double a)
+{
+	glPushAttrib(GL_ALL_ATTRIB_BITS);
+	glDisable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+	glColor4f(r, g, b, a);
+	glBegin(GL_QUADS);
+	{
+		glVertex2f(min_x, min_y);
+		glVertex2f(max_x, min_y);
+		glVertex2f(max_x, max_y);
+		glVertex2f(min_x, max_y);
+	}
+	glEnd();
+
+	glPopAttrib();
+
+}
 void SpriteRenderer::SetTileSize(double width, double height)
 {
 	m_tile_width = width;
