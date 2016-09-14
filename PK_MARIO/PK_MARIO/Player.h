@@ -47,7 +47,7 @@ public:
 	double GetNextXPosition(double dt) const { return GetX() + GetXVelocity() * dt * GetRunningFactor(); }
 
 	// prostok¹t otaczaj¹cy jednostkê bez uwzglêdniania jej pozycji
-	Collisions GetBasicAabb() const { return Collisions(.1, 0, .7, .9); }
+	Collisions GetBasicAabb() const { return Collisions(0, 0, .7, .9); }
 
 
 	void AddScores(int scores) { m_total_scores += scores; }

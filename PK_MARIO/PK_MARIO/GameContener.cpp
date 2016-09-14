@@ -3,14 +3,84 @@
 #include "Tile.h"
 
 
-bool GameContener::IsAnyFieldAboveMe(double x, double y)
+bool GameContener::IsAnyFieldAboveMe(double x, double y,double dt)
 {
-	if ((map[(int)x][(int)y + 1].GetType() != TYPES::None) ||
-		(map[(int)x - 1][(int)y + 1].GetType() != TYPES::None) ||
-		(map[(int)x + 1][(int)y + 1].GetType() != TYPES::None));
-	//Collisions box(x, y, x + SpriteRenderer::GetTileWidth(), y + SpriteRenderer::GetTileHeight());
-	//box.IsOver()
-	return true;
+
+	for (int i = -1; i < 2; ++i) {
+		if (map[(int)x + i][(int)y + 1].GetType() == TYPES::None) {
+			continue;
+		}
+		Collisions box((int)x+i, (int)y+1, (int)x+i + 1, (int)y +1+ 1);
+		
+		if (m_player->GetNextVerticalAabb(dt).IsOver(box)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool GameContener::IsAnyFieldBelowMe(double x, double y, double dt)
+{
+
+	for (int i = -1; i < 2; ++i) {
+		if (map[(int)x + i][(int)y - 1].GetType() == TYPES::None) {
+			continue;
+		}
+		Collisions box((int)x + i, (int)y - 1, (int)x + i + 1, (int)y - 1 + 1);
+
+		if (m_player->GetNextVerticalAabb(dt).IsUnder(box)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool GameContener::IsAnyFieldOnLeft(double x, double y, double dt)
+{
+	for (int i = -1; i < 2; ++i) {
+		if (map[(int)x - 1][(int)y + i].GetType() == TYPES::None) {
+			continue;
+		}
+		Collisions box((int)x - 1, (int)y + i, (int)x - 1 + 1, (int)y + i + 1);
+
+		if (m_player->GetNextHorizontalAabb(dt).IsOnLeftOf(box)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool GameContener::IsAnyFieldOnRight(double x, double y, double dt)
+{
+	for (int i = -1; i < 2; ++i) {
+		if (map[(int)x + 1][(int)y + i].GetType() == TYPES::None) {
+			continue;
+		}
+		Collisions box((int)x+ 1, (int)y + i, (int)x + 1 +1, (int)y + i + 1);
+
+		if (m_player->GetNextHorizontalAabb(dt).IsOnRightOf(box)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+void GameContener::CheckCollisionsWithLevel(double dt)
+{
+	if (IsAnyFieldAboveMe(m_player->get_x(), m_player->get_y(), dt)) {
+		m_player->Fall();
+	}
+	if (IsAnyFieldBelowMe(m_player->get_x(), m_player->get_y(), dt)) {
+		m_player->PlayerOnGround();
+	}
+	if (IsAnyFieldOnRight(m_player->get_x(), m_player->get_y(), dt)) {
+		m_player->ForbidGoingRight();
+	}
+	if (IsAnyFieldOnLeft(m_player->get_x(), m_player->get_y(), dt)) {
+		m_player->ForbidGoingLeft();
+		std::cout << "no left" << "\n";
+	}
+
 }
 
 void GameContener::LoadLevelFromFile(const std::string & filename)
@@ -173,6 +243,8 @@ void GameContener::DrawScene()
 void GameContener::UpdateScene(double dt)
 {
 	m_player->SetDefaultMovement();
+	CheckCollisionsWithLevel(dt);
+	
 	m_player->Update(dt);
 }
 

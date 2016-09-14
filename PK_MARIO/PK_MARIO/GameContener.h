@@ -27,11 +27,13 @@ private:
 	/// <summary>	The stored player position x coordinate. </summary>
 	double m_stored_player_pos_x;
 
-	bool IsAnyFieldAboveMe(double x, double y);
-	bool IsAnyFieldOnLeft(double x, double y) const;
-	bool IsAnyFieldOnRight(double x, double y) const;
-	bool DoFieldsEndOnLeft(double x, double y) const;
-	bool DoFieldsEndOnRight(double x, double y) const;
+	bool IsAnyFieldAboveMe(double x, double y,double dt) ;
+	bool IsAnyFieldBelowMe(double x, double y, double dt);
+	bool IsAnyFieldOnLeft(double x, double y, double dt) ;
+	bool IsAnyFieldOnRight(double x, double y, double dt) ;
+	bool DoFieldsEndOnLeft(double x, double y, double dt) ;
+	bool DoFieldsEndOnRight(double x, double y, double dt) ;
+	void CheckCollisionsWithLevel(double dt);
 
 public:
 	
