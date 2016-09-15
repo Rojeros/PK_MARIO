@@ -1,5 +1,5 @@
-#ifndef RENDERER_H_
-#define RENDERER_H_
+#ifndef SPRITERENDERER_H_
+#define SPRITERENDERER_H_
 
 #include "StdAfx.h"
 #include "Types.h"

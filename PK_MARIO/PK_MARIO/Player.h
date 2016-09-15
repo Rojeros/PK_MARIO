@@ -1,5 +1,9 @@
+#ifndef PLAYER_H_
+#define PLAYER_H_
+
 #pragma once
 #include "Character.h"
+#include "Monster.h"
 class Player :
 	public Character
 {
@@ -19,7 +23,7 @@ public:
 		SetDefaultMovement();
 	}
 		
-	TYPES::CharacterState GetType() const {
+	TYPES::FieldType GetType()   {
 		throw std::logic_error("Gracz nie jest jednostk¹");
 	}
 	virtual void GoLeft() { m_vx -= GetDefaultXVelocity(); m_state = TYPES::GoLeft; }
@@ -33,7 +37,7 @@ public:
 	void ForbidToJump() { m_jump_allowed = false; }
 	void Run() { m_running_factor = 2.0; }
 	void StopRunning() { m_running_factor = 1.0; }
-	double GetRunningFactor() const { return m_running_factor; }
+	double GetRunningFactor()   { return m_running_factor; }
 	void Jump(double y_velocity = DefaultYVelocity);
 	void SetDefaultMovement() {
 		m_is_on_ground = m_jump_allowed = false;
@@ -44,20 +48,20 @@ public:
 		SetYVelocity(0);
 	}
 
-	double GetNextXPosition(double dt) const { return GetX() + GetXVelocity() * dt * GetRunningFactor(); }
+	double GetNextXPosition(double dt)   { return GetX() + GetXVelocity() * dt * GetRunningFactor(); }
 
 	// prostok¹t otaczaj¹cy jednostkê bez uwzglêdniania jej pozycji
-	Collisions GetBasicAabb() const { return Collisions(0, 0, .7, .9); }
-
+	Collisions GetBasicAabb()   { return Collisions(0, 0, .7, .9); }
+	void CheckCollisionsWithLevel(double dt, Level * p_level);
 
 	void AddScores(int scores) { m_total_scores += scores; }
-	int  GetScores() const { return m_total_scores; }
+	int  GetScores()   { return m_total_scores; }
 
 	// wystrzel pocisk
 	void FireBullet();
 	void Draw();
 	// zwraca liczbê ¿yæ bohatera
-	int GetLifesCount() const { return m_lifes; }
+	int GetLifesCount()   { return hp; }
 
 	// gracz straci³ ¿ycie - reakcja na zdarzenie
 	void LooseLife();
@@ -66,19 +70,26 @@ public:
 	// (np. odegranie fanfarów, wyœwietlenia napisu, ...
 	void LevelCompleted();
 
-	bool HasCompletedCurrentLevel() const {
+	bool HasCompletedCurrentLevel()   {
 		return m_is_level_completed;
 	}
+	// obs³uga kolizji z ka¿dej strony
+	void CollisionOnRight(std::vector<Monster>::iterator it);
+	void CollisionOnLeft(std::vector<Monster>::iterator it);
+	void CollisionOverPlayer(std::vector<Monster>::iterator it);
+	void CollisionUnderPlayer(std::vector<Monster>::iterator it);
+
+
 	void setSprite(Sprite & data, std::string name, TYPES::PlayerState state);
-	bool IsImmortal() const { return m_is_immortal; }
+	bool IsImmortal()   { return m_is_immortal; }
 
 	void EnableTwinShot() { m_twin_shot_enabled = true; }
 	void DisableTwinShot() { m_twin_shot_enabled = false; }
-	bool IsTwinShotEnabled() const { return m_twin_shot_enabled; }
+	bool IsTwinShotEnabled()   { return m_twin_shot_enabled; }
 	bool Player::MoveMap();
 
 	~Player() {};
-	void Update(double dt);
+	void Update(double dt,Level*p_level);
 
 private:
 	enum {
@@ -104,3 +115,4 @@ private:
 	double m_max_x_pos;
 };
 
+#endif

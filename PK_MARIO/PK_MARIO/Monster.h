@@ -1,23 +1,65 @@
+#ifndef MONSTER_H_
+#define MONSTER_H_
 #pragma once
 #include "Character.h"
-class Monster :
-	public Character
+
+class Monster :public Character 
 {
-private:
-	bool move(int direction);
-	bool jump();
-	bool fire();
-public:
-	Monster(float x1, float y1, bool exist1, TYPES::FieldType type1, TYPES::DisplayLayer layer1, int hp1, size_t level_width, double def_velocity_x, double def_velocity_y,
-		double def_acceleration_x = 0, double def_acceleration_y = 0) :
-		Character(x1, y1, exist1, type1, layer1, hp1, def_velocity_x, def_velocity_y, def_acceleration_x, def_acceleration_y)
-	{
-		SetDefaultMovement();
-	}
-	~Monster();
-
-	void Draw();
-	void Update(double dt);
-
+enum {
+	DefaultXVelocity = 2, DefaultYVelocity = 0, DefaultXAcceleration = 0, DefaultYAcceleration = -60
 };
 
+public:
+	Monster(double x, double y) :
+		Character(x, y,true,TYPES::Enemy,TYPES::Foreground,1, DefaultXVelocity, DefaultYVelocity, DefaultXAcceleration, DefaultYAcceleration) {
+	}
+
+	int GetScoresWhenKilled()   { return 100; }
+
+	Collisions GetBasicAabb()   {
+		return Collisions(0, 0, .9, .9);
+	}
+	TYPES::FieldType GetType()  ;
+
+	void setSprite(Sprite & data, std::string name, TYPES::MonsterState state)
+	{
+		SpriteLoader::Insert(name, data);
+		switch (state) {
+		case TYPES::GoLeft:
+			m_left = SpriteLoader::Get(name);
+			break;
+		case TYPES::GoRight:
+			m_right = SpriteLoader::Get(name);
+			break;
+		case TYPES::Stand:
+			m_stop = SpriteLoader::Get(name);
+			break;
+		}
+
+	}
+	void CheckCollisionsWithLevel(double dt,  Level*level) {
+		// ruszaj siê zamiast staæ
+		if (GetXVelocity() == 0) {
+			GoLeft();
+		}
+
+		// czy jednostka koliduje z czymœ od do³u
+		if (IsAnyFieldBelowMe(GetX(),GetY(),dt, level)) {
+			EntityOnGround();
+		}
+
+		// koniec pod³o¿a lub brak przejœcia z lewej strony
+		if (DoFieldsEndOnLeft(GetX(), GetY(), dt, level) || IsAnyFieldOnLeft(GetX(), GetY(), dt, level)) {
+			StopMovement();
+			GoRight();
+		}
+
+		// koniec pod³o¿a lub brak przejœcia z prawej strony
+		if (DoFieldsEndOnRight(GetX(), GetY(), dt, level) || IsAnyFieldOnRight(GetX(), GetY(), dt, level)) {
+			StopMovement();
+			GoLeft();
+		}
+	}
+	
+};
+#endif

@@ -1,3 +1,6 @@
+#ifndef SPRITEDATA_H_
+#define SPRITEDATA_H_
+
 #pragma once
 #include "StdAfx.h"
 
@@ -24,3 +27,4 @@ public:
 	~SpriteData();
 };
 
+#endif

@@ -74,7 +74,7 @@ void App::Run()
 	glEnable(GL_ALPHA_TEST); // niewyœwietlanie przezroczystych fragmentów sprite'a
 	glAlphaFunc(GL_GEQUAL, 0.1);
 
-	//const std::string atlas_filename = "data/tex.png";
+	//  std::string atlas_filename = "data/tex.png";
 	//Engine& engine = Engine::Get();
 //	engine.Load();
 	//engine.GetRenderer()->LoadTexture(atlas_filename);

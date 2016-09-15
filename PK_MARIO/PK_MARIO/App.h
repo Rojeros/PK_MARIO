@@ -1,3 +1,5 @@
+#ifndef APP_H_
+#define APP_H_
 #include "StdAfx.h"
 #include "Field.h"
 #include "Player.h"
@@ -12,7 +14,7 @@ class App
 {
 public:
 	
-	/// <summary>	Constructor. </summary>
+	/// <summary>	 Consructor. </summary>
 	///
 	/// <param name="win_width">	  	Width of the window. </param>
 	/// <param name="win_height">	  	Height of the window. </param>
@@ -25,8 +27,9 @@ public:
 	
 	{
 		game = new GameContener();
-		game->LoadLevelFromFile("data\\1.lvl");
+	
 		game->SetPlayer();
+		game->addEnemy(TYPES::Enemy);
 	}
 
 	/// <summary>	Runs window. </summary>
@@ -72,3 +75,5 @@ private:
 
 };
 
+
+#endif

@@ -13,8 +13,9 @@ void Player::Jump(double y_velocity)
 	}
 }
 
-void Player::Update(double dt)
+void Player::Update(double dt,Level*p_level)
 {
+	CheckCollisionsWithLevel(dt, p_level);
 	// wylicz now¹ prêdkoœæ oraz po³ó¿enie na osi OY
 	if (!m_is_on_ground) {
 		m_y = GetNextYPosition(dt);
@@ -22,14 +23,13 @@ void Player::Update(double dt)
 	}
 
 	// je¿eli poni¿ej pierwszego kafla, to odbieramy ¿ycie.
-	if (m_y < 1) {
-	//	LooseLife();
-		m_y = 1;
-		PlayerOnGround();
+	if (m_y < 0.5) {
+		LooseLife();
+	
 	}
 
 	// uaktualnij informacje o nieœmiertelnoœci
-	const double immortality_time = 3; // 3 sekundy
+	  double immortality_time = 3; // 3 sekundy
 	if (m_immortal_duration > immortality_time) {
 		m_is_immortal = false;
 		m_immortal_duration = 0;
@@ -48,11 +48,11 @@ void Player::Update(double dt)
 	}
 
 	// nie mo¿na wyjœæ poza mapê
-	if (m_x < 0) {
-		m_x = 0; // nie mo¿na wyjœæ za pocz¹tek mapy
+	if (m_x < 1) {
+		m_x = 1; // nie mo¿na wyjœæ za pocz¹tek mapy
 	}
-	else if (m_x > m_level_width - 1) {
-		m_x = m_level_width - 1; // nie mo¿na wyjœæ za ostatni kafel mapy
+	else if (m_x > m_level_width - 2) {
+		m_x = m_level_width - 2; // nie mo¿na wyjœæ za ostatni kafel mapy
 	}
 	// ustal stan ruchu gracza na podstawie prêdkoœci
 	if (fabs(m_vx) < 0.001 && (m_state != TYPES::TurnLeft || m_state != TYPES::TurnRight)) {
@@ -81,6 +81,24 @@ void Player::Update(double dt)
 	}
 }
 
+void Player::CollisionOnRight(std::vector<Monster>::iterator it) {
+	LooseLife();
+}
+
+void Player::CollisionOnLeft(std::vector<Monster>::iterator it) {
+	LooseLife();
+}
+
+void Player::CollisionOverPlayer(std::vector<Monster>::iterator it) {
+	LooseLife();
+}
+
+void Player::CollisionUnderPlayer(std::vector<Monster>::iterator it) {
+	AllowToJump();
+	Jump(GetDefaultYVelocity() + 6);
+	AddScores(it->GetScoresWhenKilled() * 2);
+	it->KilledByPlayer();
+}
 void Player::setSprite(Sprite & data, std::string name, TYPES::PlayerState state)
 {
 	SpriteLoader::Insert(name, data);
@@ -100,8 +118,8 @@ void Player::setSprite(Sprite & data, std::string name, TYPES::PlayerState state
 
 bool Player::MoveMap()
 {
-	const size_t screen_tiles_count = SpriteRenderer().GetHorizontalTilesOnScreenCount();
-	const size_t half_screen_tiles_count = screen_tiles_count / 2;
+	  size_t screen_tiles_count = SpriteRenderer().GetHorizontalTilesOnScreenCount();
+	  size_t half_screen_tiles_count = screen_tiles_count / 2;
 
 	return((m_x > half_screen_tiles_count - 1) && (m_x < ((m_level_width - 1) - half_screen_tiles_count)));
 }
@@ -110,12 +128,21 @@ bool Player::MoveMap()
 
 void Player::Draw()
 {
+	Text scores_text;
+	scores_text.SetSize(0.05, 0.05);
+	scores_text.DrawText("Score " + scores_text.IntToStr(GetScores()), .01, .9);
+	scores_text.DrawText("Lives " + scores_text.IntToStr(GetLifesCount()), .65, .9);
+
+	// je¿eli bohater jest nieœmiertelny, to miga (rysuj - nie rysuj)
+	if (IsImmortal() && int(m_immortal_duration * 10) % 2 == 1) {
+		return;
+	}
 	double height, width;
 	height=m_left->m_renderer->GetTileHeight();
 	width= m_left->m_renderer->GetTileWidth();
 
-	const double pos_x = m_x * height;
-	const double pos_y = m_y * width;
+	  double pos_x = m_x * height;
+	  double pos_y = m_y * width;
 
 	switch (m_state)
 	{
@@ -139,3 +166,30 @@ void Player::Draw()
 	}
 }
 
+void Player::LooseLife()
+{
+	hp--;
+
+	// nieœmiertelnoœæ przez pewien czas
+	m_is_immortal = true;
+	m_immortal_duration = 0;
+	setCoord(3, 4);
+}
+
+
+void Player::CheckCollisionsWithLevel(double dt, Level * p_level)
+{
+	if (IsAnyFieldAboveMe(GetX(),GetY(), dt, p_level)) {
+		Fall();
+	}
+	if (IsAnyFieldBelowMe(GetX(),GetY(), dt, p_level)) {
+		PlayerOnGround();
+	}
+	if (IsAnyFieldOnRight(GetX(),GetY(), dt, p_level)) {
+		ForbidGoingRight();
+	}
+	if (IsAnyFieldOnLeft(GetX(), GetY(), dt, p_level)) {
+		ForbidGoingLeft();
+	}
+
+}

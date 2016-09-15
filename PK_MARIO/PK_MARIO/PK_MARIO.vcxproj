@@ -154,6 +154,7 @@
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="GameContener.cpp" />
     <ClCompile Include="HallOfFame.cpp" />
+    <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Field.h" />
     <ClInclude Include="GameContener.h" />
     <ClInclude Include="HallOfFame.h" />
+    <ClInclude Include="Level.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ScoreSubmit.h" />

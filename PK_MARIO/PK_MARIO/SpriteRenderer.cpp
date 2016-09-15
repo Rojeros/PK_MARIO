@@ -77,8 +77,8 @@ void SpriteRenderer::LoadTexture()
 	}
 
 	// sprawdŸ wymiary - czy s¹ potêg¹ 2
-	const int width = surface->w;
-	const int height = surface->h;
+	  int width = surface->w;
+	  int height = surface->h;
 	if (((width & (width - 1)) != 0) || ((height & (height - 1)) != 0))
 	{
 		std::cerr << "Picture " + filename+ " have inccorect size: " << width << "x"
@@ -124,14 +124,14 @@ void SpriteRenderer::DrawSprite(double tex_x, double tex_y, double tex_w, double
 
 //	glBindTexture(GL_TEXTURE_2D, m_texture);
 
-	const double texture_w = 1024.0;
-	const double texture_h = 1024.0;
+	  double texture_w = 1024.0;
+	  double texture_h = 1024.0;
 
 	
-	const double left = tex_x / texture_h;;
-	const double right = left + tex_w / texture_w;
-	const double bottom = (tex_y/texture_h);
-	const double top = bottom - tex_h / texture_h;
+	  double left = tex_x / texture_h;;
+	  double right = left + tex_w / texture_w;
+	  double bottom = (tex_y/texture_h);
+	  double top = bottom - tex_h / texture_h;
 	/*
 	* Obrazek ³adowany jest do góry nogami, wiêc punkt (0,0) jest w lewym górnym rogu.
 	* St¹d wynika, ¿e w powy¿szym wzorze top jest poni¿ej bottom

@@ -1,3 +1,7 @@
+#ifndef SPRITELOADER_H_
+#define SPRITELOADER_H_
+
+
 #pragma once
 #include "StdAfx.h"
 #include "Sprite.h"
@@ -14,3 +18,4 @@ protected:
 
 };
 
+#endif

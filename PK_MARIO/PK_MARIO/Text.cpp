@@ -35,7 +35,7 @@ void Text::DrawSpecial(char ch, double pos_x, double pos_y) {
 	Draw(tex_x, tex_y, pos_x, pos_y);
 }
 
-void Text::DrawText(const std::string& text, double pos_x, double pos_y) {
+void Text::DrawText( const std::string& text, double pos_x, double pos_y) {
 	double x = pos_x;
 	double y = pos_y;
 
@@ -75,12 +75,28 @@ std::string Text::IntToStr(int number)
 	
 }
 
-int Text::StrToInt(const std::string & number)
+int Text::StrToInt( const std::string & number)
 {
 	std::istringstream ss(number);;
 	int n;
 	ss >> n;
 	return n;
+}
+
+void Text::SetTimer(double t)
+{
+	timer = t;
+}
+
+void Text::Time(double dt)
+{
+	if(timer>0)
+	timer -= dt;
+}
+
+double Text::GetTimer()
+{
+	return timer;
 }
 
 void Text::Draw(double tex_x, double tex_y, double pos_x, double pos_y) {

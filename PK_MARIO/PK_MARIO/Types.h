@@ -1,4 +1,4 @@
-#pragma once
+
 #ifndef __TYPES_H__
 #define __TYPES_H__
 
@@ -20,6 +20,12 @@ namespace  TYPES
 		GoingRight
 	};
 
+	enum MonsterState
+	{
+		MStanding,
+		MGoingLeft,
+		MGoingRight
+	};
 
 	enum DisplayLayer
 	{
@@ -34,10 +40,13 @@ namespace  TYPES
 		PlatformLeftEnd = 1,
 		PlatformMidPart = 2,
 		PlatformRightEnd = 3,
+		
 		Players = 4,
-		Enemys = 5,
-		Bonuses = 6
-		//COUNT
+		Enemy = 5,
+		Bonuses = 6,
+		NoDestroyAble=7,
+		PlayerBullet=8
+
 	};
 	enum BonusType
 	{

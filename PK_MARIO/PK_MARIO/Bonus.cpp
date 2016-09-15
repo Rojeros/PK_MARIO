@@ -12,15 +12,10 @@ Bonus::~Bonus()
 {
 }
 
-bool Bonus::draw()
-{
-//	const double tile_width = Sprite::GetRenderer()->GetTileWidth();
-//	const double tile_height = SpriteLoader::GetRenderer()->GetTileHeight();
-//	Sprite::DrawCurrentFrame();
-	return false;
-}
-
-void Bonus::Update(double dt)
+void Bonus::Update(double dt, Level * p_level)
 {
 }
 
+void Bonus::Draw()
+{
+}

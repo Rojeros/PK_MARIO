@@ -1,5 +1,5 @@
-#ifndef __AABB_H__
-#define __AABB_H__
+#ifndef __COLLISIONS_H__
+#define __COLLISIONS_H__
 #include "StdAfx.h"
 
 
@@ -11,22 +11,22 @@ public:
 
 	}
 
-	bool Collides(const Collisions& box) const;
-	bool IsOver(const Collisions& box) const;
-	bool IsUnder(const Collisions& box) const;
-	bool IsOnLeftOf(const Collisions& box) const;
-	bool IsOnRightOf(const Collisions& box) const;
+	bool Collides(  Collisions& box)  ;
+	bool IsOver(  Collisions& box)  ;
+	bool IsUnder(  Collisions& box)  ;
+	bool IsOnLeftOf(  Collisions& box)  ;
+	bool IsOnRightOf(  Collisions& box)  ;
 
-	double GetMinX() const { return m_min_x; }
-	double GetMinY() const { return m_min_y; }
-	double GetMaxX() const { return m_max_x; }
-	double GetMaxY() const { return m_max_y; }
+	double GetMinX()   { return m_min_x; }
+	double GetMinY()   { return m_min_y; }
+	double GetMaxX()   { return m_max_x; }
+	double GetMaxY()   { return m_max_y; }
 
 	Collisions Move(double min_x_offset, double min_y_offset, double max_x_offset, double max_y_offset) {
 		return Collisions(m_min_x + min_x_offset, m_min_y + min_y_offset, m_max_x + max_x_offset, m_max_y + max_y_offset);
 	}
 
-	friend std::ostream& operator<< (std::ostream& os, const Collisions& box);
+	friend std::ostream& operator<< (std::ostream& os,   Collisions& box);
 
 private:
 	// pozycja lewego dolnego naro¿nika

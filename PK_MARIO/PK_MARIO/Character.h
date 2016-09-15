@@ -1,8 +1,12 @@
+#ifndef CHARACTER_H_
+#define CHARACTER_H_
+
 #pragma once
 #include "StdAfx.h"
 #include "Field.h"
 #include "SpriteLoader.h"
 #include "Collisions.h"
+#include "Level.h"
 
 class Character :
 	public Field,public SpriteLoader
@@ -10,7 +14,7 @@ class Character :
 public:
 	Character(float x1, float y1, bool exist1, TYPES::FieldType type1, TYPES::DisplayLayer layer1, int hp1, double def_velocity_x, double def_velocity_y,
 		double def_acceleration_x = 0, double def_acceleration_y = 0) :
-		Field::Field(x1, y1, exist1, type1, layer1), hp(hp1),
+		Field::Field(x1, y1, exist1, type1, layer1,hp1),
 		 m_default_velocity_x(def_velocity_x),
 		m_default_velocity_y(def_velocity_y),
 		m_default_acceleration_x(def_acceleration_x),
@@ -23,37 +27,35 @@ public:
 		m_ay(def_acceleration_y),
 		m_is_on_ground(true),
 		m_can_go_left(true),
-		m_can_go_right(true)
+		m_can_go_right(true),
+		hp(hp1)
 	{
 		SetDefaultMovement();
 	}
-	virtual TYPES::CharacterState GetType() const = 0;
-	virtual int GetScoresWhenKilled() const { return 0; }
-	virtual void Update(double dt)=0;
-	virtual void Draw();
+	virtual TYPES::FieldType GetType()   = 0;
+	virtual int GetScoresWhenKilled()   { return 0; }
+	 void Update(double dt,Level * p_level);
+	void Draw();
 	void setSprite(Sprite & data, std::string name, TYPES::CharacterState state);
-	bool IsDead() const { return m_is_dead; }
-	bool IsAlive() const { return !m_is_dead; }
+	bool IsDead()   { return m_is_dead; }
+	bool IsAlive()   { return !m_is_dead; }
 	void SetIsDead(bool is_dead = true) { m_is_dead = is_dead; }
 	void KilledByPlayer();
 	void KilledWithBullet();
 
 	// zarz¹dzanie po³o¿eniem 
-	double GetX() const { return m_x; }
-	double GetY() const { return m_y; }
-	virtual double GetNextXPosition(double dt) const { return m_x + GetNextXVelocity(dt) * dt; }
-	virtual double GetNextYPosition(double dt) const { return m_y + GetNextYVelocity(dt) * dt; }
-	void SetX(double newx) { m_x = newx; }
-	void SetY(double newy) { m_y = newy; }
-	void SetPosition(double x, double y) { m_x = x; m_y = y; }
+
+	virtual double GetNextXPosition(double dt)   { return m_x + GetNextXVelocity(dt) * dt; }
+	virtual double GetNextYPosition(double dt)   { return m_y + GetNextYVelocity(dt) * dt; }
+	
 
 	// zarz¹dzanie prêdkoœci¹
-	double GetXVelocity() const { return m_vx; }
-	double GetYVelocity() const { return m_vy; }
-	double GetNextXVelocity(double dt) const { return m_vx + m_ax * dt; }
-	double GetNextYVelocity(double dt) const { return m_vy + m_ay * dt; }
-	double GetDefaultXVelocity() const { return m_default_velocity_x; }
-	double GetDefaultYVelocity() const { return m_default_velocity_y; }
+	double GetXVelocity()   { return m_vx; }
+	double GetYVelocity()   { return m_vy; }
+	double GetNextXVelocity(double dt)   { return m_vx + m_ax * dt; }
+	double GetNextYVelocity(double dt)   { return m_vy + m_ay * dt; }
+	double GetDefaultXVelocity()   { return m_default_velocity_x; }
+	double GetDefaultYVelocity()   { return m_default_velocity_y; }
 	void  NegateXVelocity() { m_vx = -m_vx; }
 	void  NegateYVelocity() { m_vy = -m_vy; }
 	void  NegateVelocity() { NegateXVelocity(); NegateYVelocity(); }
@@ -62,10 +64,10 @@ public:
 	void  SetVelocity(double vx, double vy) { m_vx = vx; m_vy = vy; }
 
 	// zarz¹dzanie przyspieszeniem
-	double GetXAcceleration() const { return m_ax; }
-	double GetYAcceleration() const { return m_ay; }
-	double GetDefaultXAcceleration() const { return m_default_acceleration_x; }
-	double GetDefaultYAcceleration() const { return m_default_acceleration_y; }
+	double GetXAcceleration()   { return m_ax; }
+	double GetYAcceleration()   { return m_ay; }
+	double GetDefaultXAcceleration()   { return m_default_acceleration_x; }
+	double GetDefaultYAcceleration()   { return m_default_acceleration_y; }
 	void  SetXAcceleration(double accel) { m_ax = accel; }
 	void  SetYAcceleration(double accel) { m_ay = accel; }
 
@@ -83,29 +85,33 @@ public:
 		m_is_on_ground = true;
 		m_vy = 0;
 	}
+	virtual void CheckCollisionsWithLevel(double dt, Level * p_level) = 0;
+	bool IsAnyFieldAboveMe(double x, double y, double dt, Level * p_level);
+	bool IsAnyFieldBelowMe(double x, double y, double dt, Level * p_level);
+	bool IsAnyFieldOnLeft(double x, double y, double dt, Level * p_level);
+	bool IsAnyFieldOnRight(double x, double y, double dt, Level * p_level);
+	bool DoFieldsEndOnLeft(double x, double y, double dt, Level * p_level);
+	bool DoFieldsEndOnRight(double x, double y, double dt, Level * p_level);
 
-
-	// pod argumenty x, y zapisuje numer aktualnego kafla
-	void GetCurrentTile(size_t *x, size_t *y) const {
-		const size_t v_tiles_count = SpriteRenderer::GetVerticalTilesOnScreenCount();
-		*y = (size_t)(v_tiles_count - (GetAabb().GetMinY() + GetAabb().GetMaxY()) / 2);
-		*x = (size_t)(GetX() + GetBasicAabb().GetMaxX() / 2);
+	void EntityOnGround() {
+		m_is_on_ground = true;
+		m_vy = 0;
 	}
 
 	// prostok¹t otaczaj¹cy jednostkê bez uwzglêdniania pozycji jednostki
-	virtual Collisions GetBasicAabb() const { return Collisions(0, 0, 1, 1); }
+	virtual Collisions GetBasicAabb()   { return Collisions(0, 0, 1, 1); }
 
-	Collisions GetAabb() const { return GetBasicAabb().Move(m_x, m_y, m_x, m_y); }
+	Collisions GetAabb()   { return GetBasicAabb().Move(m_x, m_y, m_x, m_y); }
 
-	Collisions GetNextHorizontalAabb(double dt) const {
+	Collisions GetNextHorizontalAabb(double dt)   {
 		return GetBasicAabb().Move(GetNextXPosition(dt), m_y, GetNextXPosition(dt), m_y);
 	}
 
-	Collisions GetNextVerticalAabb(double dt) const {
+	Collisions GetNextVerticalAabb(double dt)   {
 		return GetBasicAabb().Move(m_x, GetNextYPosition(dt), m_x, GetNextYPosition(dt));
 	}
 
-	Collisions GetNextAabb(double dt) const {
+	Collisions GetNextAabb(double dt)   {
 		return GetBasicAabb().Move(GetNextXPosition(dt), GetNextYPosition(dt),
 			GetNextXPosition(dt), GetNextYPosition(dt));
 	}
@@ -134,3 +140,4 @@ protected:
 	bool m_can_go_right;      // czy postaæ mo¿e iœæ w prawo
 };
 
+#endif

@@ -18,15 +18,6 @@ void Field::setCoord(float x1, float y1)
 	m_y = y1;
 }
 
-float Field::get_x()
-{
-	return m_x;
-}
-
-float Field::get_y()
-{
-	return m_y;
-}
 
 bool Field::isExist()
 {

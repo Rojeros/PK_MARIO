@@ -17,7 +17,7 @@ public:
 	void Draw();
 	bool Update(double dt);
 
-	bool IsDone() const { return m_is_done; }
+	bool IsDone()   { return m_is_done; }
 
 
 private:
