@@ -47,7 +47,7 @@ public:
 		m_is_on_ground = m_jump_allowed = true;
 		SetYVelocity(0);
 	}
-
+	void addLive();
 	double GetNextXPosition(double dt)   { return GetX() + GetXVelocity() * dt * GetRunningFactor(); }
 
 	// prostok¹t otaczaj¹cy jednostkê bez uwzglêdniania jej pozycji

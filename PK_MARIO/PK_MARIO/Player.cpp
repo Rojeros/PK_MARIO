@@ -197,6 +197,11 @@ void Player::LooseLife()
 }
 
 
+void Player::addLive()
+{
+	hp++;
+}
+
 void Player::CheckCollisionsWithLevel(double dt, Level * p_level)
 {
 	if (IsAnyFieldAboveMe(GetX(),GetY(), dt, p_level)) {

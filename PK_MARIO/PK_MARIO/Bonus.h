@@ -2,22 +2,61 @@
 #define BONUS_H_
 #pragma once
 #include "Tile.h"
-#include "SpriteLoader.h"
+#include "Character.h"
 
 class Bonus :
-	public Tile,public SpriteLoader
+	public Character
 {
 private:
 	TYPES::BonusType bonusType;
+	int changeDirectionX, changeDirectionY;
+	double timer;
 	
 public:
-	Bonus(float x1, float y1, bool exist1, TYPES::FieldType type1, TYPES::DisplayLayer layer1, TYPES::BonusType bonus) :Tile::Tile(x1, y1, exist1, type1, layer1), bonusType(bonus)
+	Bonus(float x1, float y1, bool exist1, TYPES::FieldType type1, TYPES::DisplayLayer layer1, TYPES::BonusType bonus) :Character::Character(x1, y1, exist1, type1, layer1,8,8,8), bonusType(bonus),changeDirectionX(1), changeDirectionY(-1),timer(0)
 	{
+		SetDefaultMovement();
 	};
 	~Bonus();
 	TYPES::BonusType getBonusType();
+	TYPES::FieldType GetType() { return TYPES::Bonuses; }
+	Collisions GetBasicAabb() {
+		return Collisions(0, 0, .4, .4);
+	}
 
+	void SetDefaultMovement() {
+		SetXVelocity(1);
+		SetYVelocity(1);
 
+	}
+ double GetNextXPosition(double dt)
+ { 
+	 double x= m_x + changeDirectionX*GetNextXVelocity(dt) * dt;
+	 return x;
+ }
+double GetNextYPosition(double dt)
+{ 
+	double y = m_y + changeDirectionY*GetNextYVelocity(dt) * dt;
+	return y; }
+
+	void CheckCollisionsWithLevel(double dt, Level * p_level) {
+		// czy jednostka koliduje z czymœ od do³u lub od góry
+		if (IsAnyFieldBelowMe(m_x, m_y, dt, p_level) || IsAnyFieldAboveMe(m_x, m_y, dt, p_level)) {
+			SetIsDead(true);
+		}
+		// czy jednostka koliduje z czymœ po lewej lub prawej stronie
+		if (IsAnyFieldOnLeft(m_x, m_y, dt, p_level) || IsAnyFieldOnRight(m_x, m_y, dt, p_level)) {
+			SetIsDead(true);
+		}
+	}
+
+	void setSprite(Sprite & data, std::string name, TYPES::FieldType state)
+	{
+		SpriteLoader::Insert(name, data);
+
+		m_right = SpriteLoader::Get(name);
+		m_state = TYPES::GoingRight;
+	}
 	void Update(double dt, Level* p_level);
 	void Draw();
 };

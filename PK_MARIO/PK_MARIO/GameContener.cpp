@@ -126,7 +126,15 @@ void GameContener::CheckPlayerEntitiesCollisions(double dt) {
 			// postaæ nie koliduje ze swoimi pociskami
 			continue;
 		}
-		
+		if ((*it)->GetType() == TYPES::Bonuses) {
+			Collisions entity_box = (*it)->GetAabb();
+			if ((player_box_y.IsUnder(entity_box)) || (player_box_x.IsOnLeftOf(entity_box)) || (player_box_x.IsOnRightOf(entity_box)) || (player_box_y.IsUnder(entity_box))) {
+				m_player->addLive();
+				(*it)->SetIsDead();
+			}
+			// postaæ nie koliduje ze swoimi pociskami
+			continue;
+		}
 
 		// nieœmiertelna postaæ nie koliduje z innymi jednostkami,
 		// ale mo¿e zbieraæ np. upgrade'y (patrz wy¿ej)
@@ -248,4 +256,13 @@ void GameContener::addBullet()
 		ptr->setSprite(Sprite(SpriteData(1, 0.2, 0, 6 * 32, 32, 32, true, TYPES::Foreground), std::string("data\\tex3.png")), "bullet_Right", TYPES::PlayerBullet);
 	}
 	m_player->DisableBullet();
+}
+
+void GameContener::addBonus(double x, double y, TYPES::BonusType type1)
+{
+	monsterList.push_back(new Bonus(x, y, true, TYPES::Bonuses, TYPES::Foreground, type1));
+	if (dynamic_cast<Bonus*>(&*monsterList.back()) != NULL) {
+		Bonus*ptr = dynamic_cast<Bonus*>(&*monsterList.back());
+		ptr->setSprite(Sprite(SpriteData(1, 0.2, 0, 12 * 32, 32, 32, true, TYPES::Foreground), std::string("data\\tex3.png")), "hpBonus", TYPES::Bonuses);
+	}
 }

@@ -14,6 +14,14 @@ Bonus::~Bonus()
 
 void Bonus::Update(double dt, Level * p_level)
 {
+	timer += dt;
+	if(timer>0.5){
+	changeDirectionX *= -1;
+	changeDirectionY *= -1;
+	timer = 0;
+	}
+	m_right->Update(dt);
+	SetPosition(GetX(), GetNextYPosition(dt));
 }
 
 void Bonus::Draw()
@@ -26,7 +34,7 @@ void Bonus::Draw()
 
 	if (isExist()) {
 		std::string name;
-		switch (GetType()) {
+		switch (getBonusType()) {
 		case TYPES::hp:
 			name = "hpBonus";
 			break;

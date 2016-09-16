@@ -50,6 +50,7 @@ public:
 	void CheckEntityEntityCollisions(double dt);
 	bool GameContener::IsMarkedToDelete(Character * o);
 	void addBullet();
+	void addBonus(double x, double y, TYPES::BonusType type1);
 
 	~GameContener() {
 		delete m_player;
