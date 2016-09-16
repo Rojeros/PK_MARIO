@@ -19,6 +19,7 @@ public:
 	TYPES::FieldType GetType();
 	void Draw();
 	void Destroy();
+	void Change(TYPES::FieldType);
 	
 	void Update(double dt,Level * p_level);
 };

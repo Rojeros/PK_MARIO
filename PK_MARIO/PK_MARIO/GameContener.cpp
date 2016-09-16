@@ -47,9 +47,9 @@ void GameContener::DrawScene()
 		p_level->SetLevel(m_stored_player_pos_x);
 		p_level->DrawLevel(m_stored_player_pos_x);
 		m_player->Draw();
-		for (std::vector<Monster>::iterator it = monsterList.begin(); it != monsterList.end(); ++it) {
-			if (it->IsAlive()) {
-				it->Draw();
+		for (std::vector<Character*>::iterator it = monsterList.begin(); it != monsterList.end(); ++it) {
+			if ((*it)->IsAlive()) {
+				(*it)->Draw();
 			}
 		}
 	
@@ -74,13 +74,18 @@ void GameContener::UpdateScene(double dt)
 	CheckPlayerEntitiesCollisions(dt);
 	CheckEntityEntityCollisions(dt);
 	m_player->Update(dt, p_level);
+	
+	if (m_player->isBulletFired()) {
+		addBullet();
+	}
+
 
 	monsterList.erase(
-		std::remove_if(monsterList.begin(), monsterList.end(), [](Monster & a) {return a.IsDead(); }), monsterList.end());
+		std::remove_if(monsterList.begin(), monsterList.end(), [](Character * a) {return (*a).IsDead(); }), monsterList.end());
 
-	for (std::vector<Monster>::iterator it = monsterList.begin(); it != monsterList.end(); ++it) {
-		if (it->IsAlive()) {
-			it->Update(dt, p_level);
+	for (std::vector<Character*>::iterator it = monsterList.begin(); it != monsterList.end(); ++it) {
+		if ((*it)->IsAlive()) {
+			(*it)->Update(dt, p_level);
 		}
 		
 	}
@@ -96,16 +101,18 @@ Player * GameContener::GetPLayer()
 
 void GameContener::addEnemy(TYPES::FieldType monster)
 {
-	monsterList.push_back(Monster(15,5));
-	monsterList.push_back(Monster(17, 5));
-	for (std::vector<Monster>::iterator it = monsterList.begin(); it != monsterList.end(); ++it) {
-
-		it->setSprite(Sprite(SpriteData(5, 0.2, 0, 4 * 32, 32, 32, true, TYPES::Foreground), std::string("data\\tex3.png")), "player_right", TYPES::MGoingRight);
-		it->setSprite(Sprite(SpriteData(5, 0.2, 0, 5 * 32, 32, 32, true, TYPES::Foreground), std::string("data\\tex3.png")), "player_left", TYPES::MGoingLeft);
-		it->setSprite(Sprite(SpriteData(1, 0.2, 0, 6 * 32, 32, 32, true, TYPES::Foreground), std::string("data\\tex3.png")), "player_stop", TYPES::MStanding);
+	Monster * ptr = new Monster(0, 0);
+	monsterList.push_back(new Monster(15, 5));
+	monsterList.push_back(new Monster(17, 5));
+	for (std::vector<Character*>::iterator it = monsterList.begin(); it != monsterList.end(); ++it) {
+		if (static_cast<Monster*>(*it) != NULL) {
+			ptr = static_cast<Monster*>(*it);
+			ptr->setSprite(Sprite(SpriteData(5, 0.2, 0, 4 * 32, 32, 32, true, TYPES::Foreground), std::string("data\\tex3.png")), "player_right", TYPES::MGoingRight);
+			ptr->setSprite(Sprite(SpriteData(5, 0.2, 0, 5 * 32, 32, 32, true, TYPES::Foreground), std::string("data\\tex3.png")), "player_left", TYPES::MGoingLeft);
+			ptr->setSprite(Sprite(SpriteData(1, 0.2, 0, 6 * 32, 32, 32, true, TYPES::Foreground), std::string("data\\tex3.png")), "player_stop", TYPES::MStanding);
 		}
 	}
-
+}
 
 void GameContener::CheckPlayerEntitiesCollisions(double dt) {
 	// poziomy i pionowy aabb gracza w nastÍpnym 'kroku'
@@ -113,10 +120,9 @@ void GameContener::CheckPlayerEntitiesCollisions(double dt) {
 	Collisions player_box_x = m_player->GetNextHorizontalAabb(dt);
 	Collisions player_box_y = m_player->GetNextVerticalAabb(dt);
 
-	for (std::vector<Monster>::iterator it = monsterList.begin(); it != monsterList.end(); ++it) {
-		Monster entity = *it;
-
-		if (it->GetType() == TYPES::PlayerBullet) {
+	for (std::vector<Character*>::iterator it = monsterList.begin(); it != monsterList.end(); ++it) {
+	
+		if ((*it)->GetType() == TYPES::PlayerBullet) {
 			// postaÊ nie koliduje ze swoimi pociskami
 			continue;
 		}
@@ -128,8 +134,8 @@ void GameContener::CheckPlayerEntitiesCollisions(double dt) {
 			continue;
 		}
 
-		it->SetDefaultMovement();
-		Collisions entity_box = it->GetAabb();
+		(*it)->SetDefaultMovement();
+		Collisions entity_box = (*it)->GetAabb();
 
 		// sprawdü czy wystπpi≥a kolizja. Jeøeli tak to gracz, zdecyduje o losie
 		// swoim i jednostki. Zauwaømy, øe jeøeli wystπpi kolizja poniøej gracza
@@ -157,9 +163,9 @@ void GameContener::CheckPlayerEntitiesCollisions(double dt) {
 	}
 }
 
-void GameContener::CheckCollisionOfOnePair(std::vector<Monster>::iterator fst_entity, TYPES::FieldType fst_type, std::vector<Monster>::iterator snd_entity, TYPES::FieldType snd_type, double dt)
+void GameContener::CheckCollisionOfOnePair(std::vector<Character*>::iterator fst_entity, TYPES::FieldType fst_type, std::vector<Character*>::iterator snd_entity, TYPES::FieldType snd_type, double dt)
 {
-	if (fst_entity->GetNextAabb(dt).Collides(snd_entity->GetNextAabb(dt)) == false) {
+	if ((*fst_entity)->GetNextAabb(dt).Collides((*snd_entity)->GetNextAabb(dt)) == false) {
 		return;
 	}
 
@@ -178,14 +184,14 @@ void GameContener::CheckCollisionOfOnePair(std::vector<Monster>::iterator fst_en
 		// to jednostka Mush bÍdzie pod fst_entity a PlayerBullet pod snd_entity
 
 		if (fst_type == TYPES::Enemy && snd_type == TYPES::PlayerBullet) {
-			snd_entity->SetIsDead(true);
-			m_player->AddScores(fst_entity->GetScoresWhenKilled());
-			fst_entity->KilledWithBullet();
+			(*snd_entity)->SetIsDead(true);
+			m_player->AddScores((*fst_entity)->GetScoresWhenKilled());
+			(*fst_entity)->KilledWithBullet();
 		}
 
 	if (fst_type == TYPES::Enemy && snd_type == TYPES::Enemy) {
-		fst_entity->NegateXVelocity();
-		snd_entity->NegateXVelocity();
+		(*fst_entity)->NegateXVelocity();
+		(*snd_entity)->NegateXVelocity();
 	}
 
 #undef SWAP_IF
@@ -193,29 +199,53 @@ void GameContener::CheckCollisionOfOnePair(std::vector<Monster>::iterator fst_en
 
 void GameContener::CheckEntityEntityCollisions(double dt) {
 	// sprawdzenie kaødej pary (kaødej jednokrotnie) - O(n^2)
-	std::vector<Monster>::iterator outer, inner;
-	std::vector<Monster>::iterator out_entity, inn_entity;
+	std::vector<Character*>::iterator outer, inner;
+	std::vector<Character*>::iterator out_entity, inn_entity;
 
 	TYPES::FieldType out_type, inn_type;
 	for (outer = monsterList.begin(); outer != monsterList.end(); ++outer) {
 		out_entity = outer;
-		out_type = outer->GetType();
-		if (out_entity->IsDead()) {
+		out_type = (*outer)->GetType();
+		if ((*out_entity)->IsDead()) {
 			continue;
 		}
 		inner = outer;
 		++inner;
 		for (; inner != monsterList.end(); ++inner) {
 			inn_entity = inner;
-			inn_type = inn_entity->GetType();
-			if (inn_entity->IsDead()) {
+			inn_type = (*inn_entity)->GetType();
+			if ((*inn_entity)->IsDead()) {
 				continue;
 			}
 			CheckCollisionOfOnePair(inn_entity, inn_type, out_entity, out_type, dt);
 		}
 	}
 }
-bool GameContener::IsMarkedToDelete(Monster *o)
+bool GameContener::IsMarkedToDelete(Character *o)
 {
 	return true;
+}
+
+void GameContener::addBullet()
+{
+	double x, xvel;
+	const double eps = 0.0001;  // jakakolwiek prÍdkoúÊ
+	if (m_player->GetState() == TYPES::TurnLeft) {
+		x = m_player->GetX() - .3;
+		xvel = -eps;
+	}
+	else if (m_player->GetState() == TYPES::TurnRight) {
+		x = m_player->GetX() + .7;
+		xvel = eps;
+	}
+	else {
+		x = m_player->GetXVelocity() < 0 ? m_player->GetX() - .3 : m_player->GetX() + .7;
+		xvel = m_player->GetXVelocity();
+	}
+	monsterList.push_back(new Bullet(x, m_player->GetY(), xvel, 0));
+	if (dynamic_cast<Bullet*>(&*monsterList.back()) != NULL) {
+		Bullet*ptr = dynamic_cast<Bullet*>(&*monsterList.back());
+		ptr->setSprite(Sprite(SpriteData(1, 0.2, 0, 6 * 32, 32, 32, true, TYPES::Foreground), std::string("data\\tex3.png")), "bullet_Right", TYPES::PlayerBullet);
+	}
+	m_player->DisableBullet();
 }

@@ -35,6 +35,9 @@ void App::ProcessEvents()
 		{
 			game->GetPLayer()->StopRunning();
 		}
+		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_s) {
+			game->GetPLayer()->FireBullet();
+		}
 		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_UP)
 		{
 			game->GetPLayer()->Jump();

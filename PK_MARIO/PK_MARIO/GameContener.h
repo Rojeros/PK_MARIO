@@ -14,12 +14,14 @@
 #include "Level.h"
 #include <list>
 #include <vector>
+#include "Bonus.h"
+#include "Bullet.h"
 
 class GameContener
 {
 private:
 	
-	std::vector<Monster> monsterList;
+	std::vector<Character*> monsterList;
 
 	Level * p_level;
 	Player * m_player;
@@ -39,15 +41,15 @@ public:
 
 	
 	void SetPlayer();
-	
 	void DrawScene();
 	void UpdateScene(double dt);
 	Player * GetPLayer();
 	void addEnemy(TYPES::FieldType monster);
 	void CheckPlayerEntitiesCollisions(double dt);
-	void CheckCollisionOfOnePair(std::vector<Monster>::iterator fst_entity, TYPES::FieldType fst_type, std::vector<Monster>::iterator snd_entity, TYPES::FieldType snd_type,double dt);
+	void CheckCollisionOfOnePair(std::vector< Character* >::iterator fst_entity, TYPES::FieldType fst_type, std::vector<Character*>::iterator snd_entity, TYPES::FieldType snd_type,double dt);
 	void CheckEntityEntityCollisions(double dt);
-	bool GameContener::IsMarkedToDelete(Monster * o);
+	bool GameContener::IsMarkedToDelete(Character * o);
+	void addBullet();
 
 	~GameContener() {
 		delete m_player;

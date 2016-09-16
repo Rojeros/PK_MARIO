@@ -27,7 +27,7 @@ public:
 	
 	{
 		game = new GameContener();
-	
+		
 		game->SetPlayer();
 		game->addEnemy(TYPES::Enemy);
 	}

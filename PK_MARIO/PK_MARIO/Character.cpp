@@ -116,7 +116,7 @@ void Character::KilledWithBullet() {
 
 bool Character::IsAnyFieldAboveMe(double x, double y, double dt, Level * p_level)
 {
-
+	try {
 	for (int i = -1; i < 2; ++i) {
 		if (p_level->GetMap()->at((int)x + i).at((int)y + 1).GetType() == TYPES::None) {
 			continue;
@@ -129,12 +129,15 @@ bool Character::IsAnyFieldAboveMe(double x, double y, double dt, Level * p_level
 			return true;
 		}
 	}
+	}
+	catch (...) {}
 	return false;
 }
 
 bool Character::IsAnyFieldBelowMe(double x, double y, double dt, Level * p_level)
 {
-	if (y >= 1) {
+	try {
+		{
 		for (int i = -1; i < 2; ++i) {
 			if (p_level->GetMap()->at((int)x + i).at((int)y - 1).GetType() == TYPES::None) {
 				continue;
@@ -146,12 +149,15 @@ bool Character::IsAnyFieldBelowMe(double x, double y, double dt, Level * p_level
 			}
 		}
 	}
+}
+catch (...) {}
 	return false;
 }
 
 bool Character::IsAnyFieldOnLeft(double x, double y, double dt, Level * p_level)
 {
-	if (y >= 1) {
+	try {
+		{
 		for (int i = -1; i < 2; ++i) {
 			if (p_level->GetMap()->at((int)x - 1).at((int)y + i).GetType() == TYPES::None) {
 				continue;
@@ -163,23 +169,29 @@ bool Character::IsAnyFieldOnLeft(double x, double y, double dt, Level * p_level)
 			}
 		}
 	}
+	}
+	catch (...) {}
 	return false;
 }
 
 bool Character::IsAnyFieldOnRight(double x, double y, double dt, Level * p_level)
 {
-	if (y >= 1) {
-		for (int i = -1; i < 2; ++i) {
-			if (p_level->GetMap()->at((int)x + 1).at((int)y + i).GetType() == TYPES::None) {
-				continue;
-			}
-			Collisions box((int)x + 1, (int)y + i, (int)x + 1 + 1, (int)y + i + 1);
+	try {
+		{
+			for (int i = -1; i < 2; ++i) {
+				if (p_level->GetMap()->at((int)x + 1).at((int)y + i).GetType() == TYPES::None) {
+					continue;
+				}
+				Collisions box((int)x + 1, (int)y + i, (int)x + 1 + 1, (int)y + i + 1);
 
-			if (GetNextHorizontalAabb(dt).IsOnRightOf(box)) {
-				return true;
+				if (GetNextHorizontalAabb(dt).IsOnRightOf(box)) {
+					return true;
+				}
 			}
+
 		}
 	}
+	catch (...) {}
 	return false;
 }
 bool Character::DoFieldsEndOnLeft(double x, double y, double dt, Level * p_level){

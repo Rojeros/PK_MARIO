@@ -81,23 +81,23 @@ void Player::Update(double dt,Level*p_level)
 	}
 }
 
-void Player::CollisionOnRight(std::vector<Monster>::iterator it) {
+void Player::CollisionOnRight(std::vector<Character*>::iterator it) {
 	LooseLife();
 }
 
-void Player::CollisionOnLeft(std::vector<Monster>::iterator it) {
+void Player::CollisionOnLeft(std::vector<Character*>::iterator it) {
 	LooseLife();
 }
 
-void Player::CollisionOverPlayer(std::vector<Monster>::iterator it) {
+void Player::CollisionOverPlayer(std::vector<Character*>::iterator it) {
 	LooseLife();
 }
 
-void Player::CollisionUnderPlayer(std::vector<Monster>::iterator it) {
+void Player::CollisionUnderPlayer(std::vector<Character*>::iterator it) {
 	AllowToJump();
 	Jump(GetDefaultYVelocity() + 6);
-	AddScores(it->GetScoresWhenKilled() * 2);
-	it->KilledByPlayer();
+	AddScores((*it)->GetScoresWhenKilled() * 2);
+	(*it)->KilledByPlayer();
 }
 void Player::setSprite(Sprite & data, std::string name, TYPES::PlayerState state)
 {
@@ -125,6 +125,26 @@ bool Player::MoveMap()
 }
 
 
+
+void Player::FireBullet()
+{
+	bulletShooted = true;
+}
+
+bool Player::isBulletFired()
+{
+	return bulletShooted;
+}
+
+void Player::DisableBullet()
+{
+	bulletShooted = false;
+}
+
+TYPES::PlayerState Player::GetState()
+{
+	return m_state;
+}
 
 void Player::Draw()
 {

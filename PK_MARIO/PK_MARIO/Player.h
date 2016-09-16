@@ -17,7 +17,7 @@ public:
 		m_total_scores(0),
 		m_is_immortal(false),
 		m_lifes(4),
-		m_twin_shot_enabled(false),
+		bulletShooted(false),
 		m_is_level_completed(false),
 		m_max_x_pos(50) {
 		SetDefaultMovement();
@@ -59,6 +59,9 @@ public:
 
 	// wystrzel pocisk
 	void FireBullet();
+	bool isBulletFired();
+	void DisableBullet();
+	TYPES::PlayerState GetState();
 	void Draw();
 	// zwraca liczbê ¿yæ bohatera
 	int GetLifesCount()   { return hp; }
@@ -74,18 +77,16 @@ public:
 		return m_is_level_completed;
 	}
 	// obs³uga kolizji z ka¿dej strony
-	void CollisionOnRight(std::vector<Monster>::iterator it);
-	void CollisionOnLeft(std::vector<Monster>::iterator it);
-	void CollisionOverPlayer(std::vector<Monster>::iterator it);
-	void CollisionUnderPlayer(std::vector<Monster>::iterator it);
+	void CollisionOnRight(std::vector<Character*>::iterator it);
+	void CollisionOnLeft(std::vector<Character*>::iterator it);
+	void CollisionOverPlayer(std::vector<Character*>::iterator it);
+	void CollisionUnderPlayer(std::vector<Character*>::iterator it);
 
 
 	void setSprite(Sprite & data, std::string name, TYPES::PlayerState state);
 	bool IsImmortal()   { return m_is_immortal; }
 
-	void EnableTwinShot() { m_twin_shot_enabled = true; }
-	void DisableTwinShot() { m_twin_shot_enabled = false; }
-	bool IsTwinShotEnabled()   { return m_twin_shot_enabled; }
+	
 	bool Player::MoveMap();
 
 	~Player() {};
@@ -108,7 +109,7 @@ private:
 	double m_immortal_duration;  // czas przez który postaæ ju¿ jest nieœmiertelna
 	int m_lifes;                 // liczba ¿yæ posiadanych przez postaæ
 
-	bool m_twin_shot_enabled;    // czy upgrade twin shot jest dostêpny
+	bool bulletShooted;    // czy upgrade twin shot jest dostêpny
 
 	bool m_is_level_completed;   // czy aktualny poziom zosta³ zakoñczony
 
