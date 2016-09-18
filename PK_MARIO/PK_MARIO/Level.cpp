@@ -14,6 +14,7 @@ std::vector<std::vector<Tile>>* Level::GetMap()
 
 void Level::LoadLevelFromFile(const std::string & filename)
 {
+	bool exist;
 	std::ifstream lvl(filename.c_str());
 	if (!lvl)
 	{
@@ -35,7 +36,12 @@ void Level::LoadLevelFromFile(const std::string & filename)
 		for (int j = 0; j <m_width; ++j)//szerokosc
 		{
 			lvl >> tmp;
-			map[j][i] = Tile(j, i, true, TYPES::FieldType(tmp), TYPES::Background);
+			if (TYPES::FieldType(tmp) == TYPES::None) {
+				exist = false;
+			}
+			else
+				exist = true;
+			map[j][i] = Tile(j, i, exist, TYPES::FieldType(tmp), TYPES::Background);
 		}
 	}
 	grid_width = SpriteRenderer::GetVerticalTilesOnScreenCount();
@@ -71,9 +77,9 @@ void Level::SetLevel(double dx)
 			int draw_x = x + static_cast<int>(dx) - half_grid_width;
 			int draw_y = y;
 			m_grid[x][y] = &map[draw_x][draw_y];
+		
 		}
 	}
-	map[0][0].SetSprite();
 }
 
 void Level::DrawLevel(double dx)
@@ -97,30 +103,12 @@ void Level::DrawLevel(double dx)
 			{
 
 				if (m_grid[x][y]->isExist()) {
-					std::string name;
-					switch (m_grid[x][y]->GetType()) {
-					case TYPES::PlatformLeftEnd:
-						name = platformleft;
-						break;
-					case TYPES::PlatformMidPart:
-						name = platformmid;
-						break;
-					case TYPES::PlatformRightEnd:
-						name = platformright;
-						break;
-					case TYPES::None:
-						name = "NULL";
-						break;
+					
+					m_grid[x][y]->SetPosition(x, y);
+						  m_grid[x][y]->Draw();
+						//m_grid[x][y]->SpriteLoader::Get(name)->DrawCurrentFrame((x)* tile_height, y * tile_width, tile_width, tile_height);
 					}
-
-					if (name != "NULL")
-					{
-						  double tile_width = m_grid[x][y]->SpriteLoader::Get(name)->m_renderer->GetTileWidth();
-						  double tile_height = m_grid[x][y]->SpriteLoader::Get(name)->m_renderer->GetTileWidth();
-
-						m_grid[x][y]->SpriteLoader::Get(name)->DrawCurrentFrame((x)* tile_height, y * tile_width, tile_width, tile_height);
-					}
-				}
+				
 
 			}
 		}

@@ -23,7 +23,7 @@ TYPES::FieldType Tile::GetType()
 					
 							double tile_width = Spritepoiner->m_renderer->GetTileWidth();
 							double tile_height = Spritepoiner->m_renderer->GetTileWidth();
-
+							
 							Spritepoiner->DrawCurrentFrame((m_x)* tile_height, m_y * tile_width, tile_width, tile_height);
 			
 				}
@@ -34,6 +34,7 @@ TYPES::FieldType Tile::GetType()
 
 void Tile::Destroy()
 {
+	if(GetType() != TYPES::NoDestroyAble)
 	hp--;
 	Update(0,NULL);
 }

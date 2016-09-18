@@ -34,7 +34,7 @@ void App::ProcessEvents()
 		{
 			game->GetPLayer()->StopRunning();
 		}
-		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_s) {
+		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE) {
 			game->GetPLayer()->FireBullet();
 		}
 		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_UP)

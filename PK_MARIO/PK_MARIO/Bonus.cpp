@@ -41,7 +41,7 @@ void Bonus::Draw()
 			break;
 		case TYPES::levelEnd:
 			
-			m_left->DrawCurrentFrame((m_x)* tile_height, m_y * tile_width, tile_height, tile_width);
+			m_left->DrawCurrentFrame((m_x)* tile_height, m_y * tile_width, tile_height*2, tile_width*2);
 			break;
 		}
 

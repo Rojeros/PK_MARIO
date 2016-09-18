@@ -24,7 +24,14 @@ public:
 	TYPES::BonusType getBonusType();
 	TYPES::FieldType GetType() { return TYPES::Bonuses; }
 	Collisions GetBasicAabb() {
-		return Collisions(0, 0, .4, .4);
+		if (bonusType == TYPES::levelEnd) 
+		{
+			return Collisions(0, 0, 1.2, 1.2);
+		}
+		else 
+		{
+			return Collisions(0, 0, .4, .4);
+		}
 	}
 
 	void SetDefaultMovement() {
