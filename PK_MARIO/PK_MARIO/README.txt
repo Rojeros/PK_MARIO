@@ -1,0 +1,1 @@
+Pleas change Solution Platform to x86, project don't have defined libraries to x64 mode

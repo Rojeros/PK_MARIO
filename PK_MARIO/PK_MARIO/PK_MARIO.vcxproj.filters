@@ -147,4 +147,9 @@
       <Filter>Header Files\sprites</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="README.txt">
+      <Filter>Header Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>
