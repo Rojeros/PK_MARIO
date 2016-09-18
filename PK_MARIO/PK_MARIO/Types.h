@@ -2,17 +2,26 @@
 #ifndef __TYPES_H__
 #define __TYPES_H__
 
+
+///-------------------------------------------------------------------------------------------------
+// namespace: TYPES
+//
+// summary:	All games types, by enums.
+///-------------------------------------------------------------------------------------------------
+
 namespace  TYPES
 {
 
+		/// <summary>	Values that represent player animation states. </summary>
 		enum PlayerState {
 			Stand,
 			GoLeft,
 			GoRight,
-			TurnLeft,   // postaæ zwrócona w lewo
-			TurnRight   // postaæ zwrócona w prawo
+			TurnLeft,   
+			TurnRight  
 		};
 	
+	/// <summary>	Values that represent character animation states. </summary>
 	enum CharacterState
 	{
 		Standing,
@@ -20,6 +29,7 @@ namespace  TYPES
 		GoingRight
 	};
 
+	/// <summary>	Values that represent monster animation states. </summary>
 	enum MonsterState
 	{
 		MStanding,
@@ -27,13 +37,15 @@ namespace  TYPES
 		MGoingRight
 	};
 
+	/// <summary>	Values that represent display layers. </summary>
 	enum DisplayLayer
 	{
-		Foreground = 1,  // przedni plan
-		PlayerLayer = 2,      // plan z graczem
-		Background = 3   // t³o
+		Foreground = 1,  
+		PlayerLayer = 2,     
+		Background = 3   
 	};
 
+	/// <summary>	Values that represent field types. </summary>
 	enum FieldType
 	{
 		None = 0,
@@ -49,6 +61,8 @@ namespace  TYPES
 		Character=9
 
 	};
+
+	/// <summary>	Values that represent bonus types. </summary>
 	enum BonusType
 	{
 		hp = 0,
@@ -58,6 +72,7 @@ namespace  TYPES
 
 
 
+/// <summary>	A level entity data, contains level directory info, enemys for level and bonuses </summary>
 struct LevelEntityData {
 	LevelEntityData()
 		: name("[unknown]"), x(-1), y(-1) {   }
@@ -69,9 +84,12 @@ struct LevelEntityData {
 		return a.x < b.x;
 	}
 
-	std::string name;  // nazwa jednostki
-	double x;          // po³o¿enie na osi odciêtych
-	double y;          // po³o¿enie na osi rzêdnych
+	/// <summary>	The string with name. </summary>
+	std::string name;  
+	/// <summary>	The x coordinate on map. </summary>
+	double x;          
+	/// <summary>	The y coordinate on map. </summary>
+	double y;          
 };
 
 #endif

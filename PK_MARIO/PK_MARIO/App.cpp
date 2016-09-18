@@ -8,7 +8,6 @@ void App::ProcessEvents()
 		return;
 	}
 	
-	// przyjrzyj zdarzenia
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
@@ -34,7 +33,8 @@ void App::ProcessEvents()
 		{
 			game->GetPLayer()->StopRunning();
 		}
-		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE) {
+		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE) 
+		{
 			game->GetPLayer()->FireBullet();
 		}
 		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_UP)
@@ -64,20 +64,19 @@ void App::ProcessEvents()
 
 void App::Run()
 {
-	// inicjalizacja okna
 	SDL_Init(SDL_INIT_VIDEO);
 	Resize(m_window_width, m_window_height);
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); // podwójne buforowanie
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); 
 
-												 // inicjalizacja OpenGL
+												
 	glClearColor(0, 0, 0, 0);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_ALPHA_TEST); // niewyœwietlanie przezroczystych fragmentów sprite'a
+	glEnable(GL_ALPHA_TEST);
 	glAlphaFunc(GL_GEQUAL, 0.1);
 
-	// main loop
+	
 	HallOfFame hof;
 	is_done = false;
 	size_t last_ticks = SDL_GetTicks();
@@ -92,12 +91,11 @@ void App::Run()
 		if (state == 2) {
 			hallOfFame.ProcessEvents();
 		}
-		// time update
+
 		size_t ticks = SDL_GetTicks();
 		double delta_time = (ticks - last_ticks) / 1000.0;
 		last_ticks = ticks;
 
-		// update & render
 		if (delta_time > 0)
 		{
 			Update(delta_time);

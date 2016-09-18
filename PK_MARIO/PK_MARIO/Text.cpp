@@ -2,18 +2,31 @@
 
 #include "Text.h"
 
-void Text::DrawDigit(char ch, double pos_x, double pos_y) {
+void Text::SetSize(double width, double height)
+{
+	m_width = width;
+	m_height = height;
+}
+
+void Text::SetLayer(size_t layer)
+{
+	m_layer = layer;
+}
+
+void Text::DrawDigit(char ch, double pos_x, double pos_y) 
+{
 	int digit = ch - '0';
 	int tex_x = digit * 32;
 	int tex_y = 7 * 32;
 	Draw(tex_x, tex_y, pos_x, pos_y);
 }
 
-void Text::DrawLetter(char ch, double pos_x, double pos_y) {
+void Text::DrawLetter(char ch, double pos_x, double pos_y) 
+{
 	int letter = toupper(ch) - 'A';
 
-	int letter_row = letter / 10; // wiersz, w którym jest litera
-	int letter_col = letter % 10; // kolumna, w której jest litera
+	int letter_row = letter / 10;
+	int letter_col = letter % 10; 
 
 	int tex_x = letter_col * 32;
 	int tex_y = (8 + letter_row) * 32;
@@ -30,7 +43,7 @@ void Text::DrawSpecial(char ch, double pos_x, double pos_y) {
 		tex_y = 320;
 	}
 	else {
-		return; // pomijamy znaki, których nie znamy
+		return; 
 	}
 	Draw(tex_x, tex_y, pos_x, pos_y);
 }
@@ -51,7 +64,7 @@ void Text::DrawText( const std::string& text, double pos_x, double pos_y) {
 			DrawSpecial(ch, x, y);
 		}
 		else {
-			; // inne znaki po prostu pomijamy
+			; 
 		}
 		x += m_width;
 	}
@@ -100,10 +113,10 @@ double Text::GetTimer()
 }
 
 void Text::Draw(double tex_x, double tex_y, double pos_x, double pos_y) {
-	tex_x = static_cast<int>(tex_x);  // "zaokr¹glanie"
+	tex_x = static_cast<int>(tex_x); 
 	tex_y = static_cast<int>(tex_y);
 
-	glPushMatrix(); // MODELVIEW
+	glPushMatrix(); 
 	{
 		glMatrixMode(GL_PROJECTION);
 		glPushMatrix();

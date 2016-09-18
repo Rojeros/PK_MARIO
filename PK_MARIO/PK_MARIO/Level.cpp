@@ -31,12 +31,13 @@ void Level::LoadLevelFromFile(const std::string & filename)
 
 	int tmp;
 
-	for (int i = m_height - 1; i >= 0; i--)//wysokoœæ
+	for (int i = m_height - 1; i >= 0; i--)
 	{
-		for (int j = 0; j <m_width; ++j)//szerokosc
+		for (int j = 0; j < m_width; ++j)
 		{
 			lvl >> tmp;
-			if (TYPES::FieldType(tmp) == TYPES::None) {
+			if (TYPES::FieldType(tmp) == TYPES::None)
+			{
 				exist = false;
 			}
 			else
@@ -77,14 +78,13 @@ void Level::SetLevel(double dx)
 			int draw_x = x + static_cast<int>(dx) - half_grid_width;
 			int draw_y = y;
 			m_grid[x][y] = &map[draw_x][draw_y];
-		
+
 		}
 	}
 }
 
 void Level::DrawLevel(double dx)
 {
-	std::string platformleft = "PlatformLeftEnd", platformmid = "PlatformMidPart", platformright = "PlatformRightEnd";
 
 	double tile_height = SpriteRenderer::GetTileHeight();
 	double tile_width = SpriteRenderer::GetTileWidth();
@@ -102,13 +102,14 @@ void Level::DrawLevel(double dx)
 			for (size_t y = 0; y < m_grid[x].size(); ++y)
 			{
 
-				if (m_grid[x][y]->isExist()) {
-					
+				if (m_grid[x][y]->isExist())
+				{
+
 					m_grid[x][y]->SetPosition(x, y);
-						  m_grid[x][y]->Draw();
-						//m_grid[x][y]->SpriteLoader::Get(name)->DrawCurrentFrame((x)* tile_height, y * tile_width, tile_width, tile_height);
-					}
-				
+					m_grid[x][y]->Draw();
+					//m_grid[x][y]->SpriteLoader::Get(name)->DrawCurrentFrame((x)* tile_height, y * tile_width, tile_width, tile_height);
+				}
+
 
 			}
 		}
@@ -120,4 +121,14 @@ void Level::deleteLevel()
 {
 	map.clear();
 	m_grid.clear();
+}
+
+size_t Level::GetWidth()
+{
+	return m_width;
+}
+
+size_t Level::GetHeight()
+{
+	return m_height;
 }

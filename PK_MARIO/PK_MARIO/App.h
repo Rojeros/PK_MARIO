@@ -32,8 +32,10 @@ public:
 
 	/// <summary>	Runs window. </summary>
 	void Run();
+	/// <summary>	Destructor. </summary>
 	App::~App() {
 		
+		delete game;
 	}
 
 private:
@@ -67,11 +69,15 @@ private:
 	/// <summary>	true if this object is done. </summary>
 	bool is_done;
 
-	/// <summary>	The screen. </summary>
+	/// <summary>	Pointer to screen object. </summary>
 	SDL_Surface* m_screen;
+	/// <summary>	Pointer to game contener object. </summary>
 	GameContener * game;
+	/// <summary>	Windows state status, 0 -game, 1 - score submit,2-hall of fame, 3- reset game . </summary>
 	int state;
+	/// <summary>	The score submit object. </summary>
 	ScoreSubmit scoreSubmit;
+	/// <summary>	The hall of fame object. </summary>
 	HallOfFame hallOfFame;
 };
 

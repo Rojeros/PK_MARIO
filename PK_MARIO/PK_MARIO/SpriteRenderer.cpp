@@ -73,7 +73,6 @@ void SpriteRenderer::resetTexture()
 
 void SpriteRenderer::LoadTexture()
 {
-	// za³aduj z pliku
 	SDL_Surface* surface = IMG_Load(filename.c_str());
 	if (!surface)
 	{
@@ -81,7 +80,6 @@ void SpriteRenderer::LoadTexture()
 		exit(1);
 	}
 
-	// sprawdŸ wymiary - czy s¹ potêg¹ 2
 	  int width = surface->w;
 	  int height = surface->h;
 	if (((width & (width - 1)) != 0) || ((height & (height - 1)) != 0))
@@ -127,7 +125,6 @@ void SpriteRenderer::DrawSprite(double tex_x, double tex_y, double tex_w, double
 	if (m_texture <= 0)
 		LoadTexture();
 
-//	glBindTexture(GL_TEXTURE_2D, m_texture);
 
 	  double texture_w = 1024.0;
 	  double texture_h = 1024.0;
@@ -137,18 +134,14 @@ void SpriteRenderer::DrawSprite(double tex_x, double tex_y, double tex_w, double
 	  double right = left + tex_w / texture_w;
 	  double bottom = (tex_y/texture_h);
 	  double top = bottom - tex_h / texture_h;
-	/*
-	* Obrazek ³adowany jest do góry nogami, wiêc punkt (0,0) jest w lewym górnym rogu.
-	* St¹d wynika, ¿e w powy¿szym wzorze top jest poni¿ej bottom
-	*/
-	glColor3f(1, 1, 1);
+
+	  glColor3f(1, 1, 1);
 	glPushMatrix();
 
 	{
 		glTranslatef(0, 0, -static_cast<double> (layer));
 		glBindTexture(GL_TEXTURE_2D, m_texture);
 		glBegin(GL_QUADS);
-	//	glColor4f(1, 1, 1,0.5);
 		{
 			glTexCoord2f(right, top);    glVertex2f(pos_x + width, pos_y + height);
 			glTexCoord2f(left, top);     glVertex2f(pos_x, pos_y + height);

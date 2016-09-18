@@ -6,6 +6,16 @@
 #include "SpriteData.h"
 #include "SpriteLoader.h"
 
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Sets type for sprite. </summary>
+///
+/// <typeparam name="putType1">	Type from template, describe additional data. </typeparam>
+/// <param name="type1">	FielType of tail. </param>
+/// <param name="type"> 	describe additional data. </param>
+///
+/// <returns>	null if it fails, else a pointer to a Sprite. </returns>
+///-------------------------------------------------------------------------------------------------
+
 template<class inputType1>
 inline 	Sprite * SetTypeForSprite(TYPES::FieldType type1, inputType1 type )
 {
@@ -120,4 +130,4 @@ inline 	Sprite * SetTypeForSprite(TYPES::FieldType type1, inputType1 type )
 
 }
 
-#endif // !SPRITEINSERTER_H_
+#endif 

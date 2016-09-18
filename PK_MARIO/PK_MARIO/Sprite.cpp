@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "Sprite.h"
-
+SpriteRenderer * Sprite::m_renderer;
 void Sprite::SetCurrentFrame(size_t frame_num)
 {
 	m_current_frame = frame_num;
@@ -8,17 +8,20 @@ void Sprite::SetCurrentFrame(size_t frame_num)
 
 }
 
+void Sprite::setRenderer()
+{
+
+}
+
 void Sprite::Update(double dt)
 {
 	m_current_frame_duration += dt;
 
-	// przejdŸ do nastêpnej klatki
 	if (m_current_frame_duration >= m_data.frame_duration_time)
 	{
 		m_current_frame++;
 		m_current_frame_duration -= m_data.frame_duration_time;
 	}
-	// sprawdŸ czy nast¹pi³ koniec animacji - przejdŸ do klatki 0. lub ostatniej
 	if (m_current_frame >= m_data.frame_count)
 	{
 		if (m_data.loop)

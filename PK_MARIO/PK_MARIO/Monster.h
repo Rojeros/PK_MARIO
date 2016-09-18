@@ -3,56 +3,66 @@
 #pragma once
 #include "Character.h"
 
-class Monster :public Character 
+/// <summary>	A monster. </summary>
+class Monster :public Character
 {
-enum {
-	DefaultXVelocity = 2, DefaultYVelocity = 0, DefaultXAcceleration = 0, DefaultYAcceleration = -60
-};
+	/// <summary>	Values that represent default moving system. </summary>
+	enum {
+		DefaultXVelocity = 2, DefaultYVelocity = 0, DefaultXAcceleration = 0, DefaultYAcceleration = -60
+	};
 
 public:
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Constructor. </summary>
+	///
+	/// <param name="x">	The x coordinate on screen. </param>
+	/// <param name="y">	The y coordinate on screen.  </param>
+	///-------------------------------------------------------------------------------------------------
+
 	Monster(double x, double y) :
-		Character(x, y,true,TYPES::Enemy,TYPES::Foreground,1, DefaultXVelocity, DefaultYVelocity, DefaultXAcceleration, DefaultYAcceleration) {
+		Character(x, y, true, TYPES::Enemy, TYPES::Foreground, 1, DefaultXVelocity, DefaultYVelocity, DefaultXAcceleration, DefaultYAcceleration) {
 	}
+	/// <summary>	Default constructor. </summary>
 	Monster() :
 		Character(0, 0, false, TYPES::Enemy, TYPES::Foreground, 1, DefaultXVelocity, DefaultYVelocity, DefaultXAcceleration, DefaultYAcceleration) {
 	}
 
-	int GetScoresWhenKilled()   { return 100; }
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Gets scores when killed. </summary>
+	///
+	/// <returns>	The scores when killed. </returns>
+	///-------------------------------------------------------------------------------------------------
 
-	Collisions GetBasicAabb()   {
-		return Collisions(0, 0, .9, .9);
-	}
-	TYPES::FieldType GetType()  ;
+	int GetScoresWhenKilled();
 
-	void SetSprite()
-	{
-		m_right = SetTypeForSprite(TYPES::Enemy, TYPES::GoingRight);
-		m_left = SetTypeForSprite(TYPES::Enemy, TYPES::GoingLeft);
-		m_stop = SetTypeForSprite(TYPES::Enemy, TYPES::Standing);
-	}
-	void CheckCollisionsWithLevel(double dt,  Level*level) {
-		// ruszaj siê zamiast staæ
-		if (GetXVelocity() == 0) {
-			GoLeft();
-		}
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Gets basic aabb collision. </summary>
+	///
+	/// <returns>	The basic aabb collision. </returns>
+	///-------------------------------------------------------------------------------------------------
 
-		// czy jednostka koliduje z czymœ od do³u
-		if (IsAnyFieldBelowMe(GetX(),GetY(),dt, level)) {
-			EntityOnGround();
-		}
+	Collisions GetBasicAabb();
 
-		// koniec pod³o¿a lub brak przejœcia z lewej strony
-		if (DoFieldsEndOnLeft(GetX(), GetY(), dt, level) || IsAnyFieldOnLeft(GetX(), GetY(), dt, level)) {
-			StopMovement();
-			GoRight();
-		}
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Gets the type. </summary>
+	///
+	/// <returns>	The TYPES::Enemy. </returns>
+	///-------------------------------------------------------------------------------------------------
 
-		// koniec pod³o¿a lub brak przejœcia z prawej strony
-		if (DoFieldsEndOnRight(GetX(), GetY(), dt, level) || IsAnyFieldOnRight(GetX(), GetY(), dt, level)) {
-			StopMovement();
-			GoLeft();
-		}
-	}
-	
+	TYPES::FieldType GetType();
+
+	/// <summary>	Sets the sprite to objects. </summary>
+	void SetSprite();
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Check collisions with level. </summary>
+	///
+	/// <param name="dt">   	The delta time. </param>
+	/// <param name="level">	[in,out] If non-null, the level. </param>
+	///-------------------------------------------------------------------------------------------------
+
+	void CheckCollisionsWithLevel(double dt, Level*level);
+
 };
 #endif

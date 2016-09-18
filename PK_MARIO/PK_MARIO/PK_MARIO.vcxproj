@@ -162,7 +162,6 @@
     <ClCompile Include="ScoreSubmit.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteData.cpp" />
-    <ClCompile Include="SpriteInserter.cpp" />
     <ClCompile Include="SpriteLoader.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="StdAfx.cpp">

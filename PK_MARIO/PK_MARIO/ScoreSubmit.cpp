@@ -42,7 +42,8 @@ void ScoreSubmit::Draw() {
 	SDL_GL_SwapBuffers();
 }
 
-std::pair<double, double> ScoreSubmit::LetterPosition(char ch) {
+std::pair<double, double> ScoreSubmit::LetterPosition(char ch) 
+{
 	int index = ch - 'a';
 	int col = index % 7;
 	int row = index / 7;
@@ -51,7 +52,8 @@ std::pair<double, double> ScoreSubmit::LetterPosition(char ch) {
 		0.45 - row * 0.07);
 }
 
-bool ScoreSubmit::Update(double /* dt */) {
+bool ScoreSubmit::Update(double /* dt */) 
+{
 	return !IsDone();
 }
 
@@ -60,64 +62,78 @@ void ScoreSubmit::setScore(int score)
 	m_points = score;
 }
 
-void ScoreSubmit::ProcessEvents() {
+void ScoreSubmit::ProcessEvents() 
+{
 	SDL_Event event;
-	while (SDL_PollEvent(&event)) {
-		if (event.type == SDL_QUIT) {
+	while (SDL_PollEvent(&event)) 
+	{
+		if (event.type == SDL_QUIT) 
+		{
 			m_is_done = true;
 			break;
 		}
 		else if (event.type == SDL_KEYDOWN) {
-			if (event.key.keysym.sym == SDLK_RETURN && m_player_nickname.at(0) != '_') {
+			if (event.key.keysym.sym == SDLK_RETURN && m_player_nickname.at(0) != '_') 
+			{
 				StoreInFile();
 				m_is_done = true;
 				break;
 			}
-			else if (event.key.keysym.sym >= SDLK_a && event.key.keysym.sym <= SDLK_z && m_next_letter < m_player_nickname.size()) {
+			else if (event.key.keysym.sym >= SDLK_a && event.key.keysym.sym <= SDLK_z && m_next_letter < m_player_nickname.size()) 
+			{
 				char key = event.key.keysym.sym - SDLK_a + 'a';
 				m_player_nickname.at(m_next_letter++) = key;
 			}
-			else if (event.key.keysym.sym == SDLK_BACKSPACE) {
-				if (m_player_nickname.at(0) != '_') {
+			else if (event.key.keysym.sym == SDLK_BACKSPACE)
+			{
+				if (m_player_nickname.at(0) != '_') 
+				{
 					m_player_nickname.at(--m_next_letter) = '_';
 				}
 			}
 		}
-		else if (event.type == SDL_MOUSEMOTION) {
+		else if (event.type == SDL_MOUSEMOTION)
+		{
 			double x = event.motion.x / 600.0;
 			double y = 1.0 - event.motion.y / 400.0;
 			m_highlighted_char = ' ';
 			for (char ch = 'a'; ch <= 'z'; ++ch) {
 				std::pair<double, double> ch_pos = LetterPosition(ch);
 				if (x >= ch_pos.first && x <= ch_pos.first + 0.07
-					&& y <= ch_pos.second + 0.07 && y >= ch_pos.second) {
+					&& y <= ch_pos.second + 0.07 && y >= ch_pos.second)
+				{
 					m_highlighted_char = ch;
 				}
 			}
 		}
 		else if (event.type == SDL_MOUSEBUTTONDOWN) {
-			if (m_highlighted_char != ' ' && m_next_letter < m_player_nickname.size()) {
+			if (m_highlighted_char != ' ' && m_next_letter < m_player_nickname.size()) 
+			{
 				m_player_nickname.at(m_next_letter++) = m_highlighted_char;
 			}
 		}
 	}
 }
 
-void ScoreSubmit::StoreInFile() {
+void ScoreSubmit::StoreInFile() 
+{
 	std::fstream hof("data/hof.txt");
-	if (!hof) {
-		std::cerr << "Nie moge odczytac Hall of Fame\n";
+	if (!hof) 
+	{
+		std::cerr << "Cant open Hall of Fame\n";
 		return;
 	}
 
 	std::vector<Entry> entries;
 	Entry e;
-	while (hof >> e.name >> e.points) {
+	while (hof >> e.name >> e.points)
+	{
 		entries.push_back(e);
 	}
 
 	Entry new_e;
-	for (size_t i = 0; i < m_player_nickname.size(); ++i) {
+	for (size_t i = 0; i < m_player_nickname.size(); ++i)
+	{
 		if (m_player_nickname.at(i) != '_') {
 			new_e.name += m_player_nickname.at(i);
 		}
@@ -127,7 +143,8 @@ void ScoreSubmit::StoreInFile() {
 
 	int j = entries.size() - 1;
 	while (j > 0) {
-		if (entries.at(j - 1).points < entries.at(j).points) {
+		if (entries.at(j - 1).points < entries.at(j).points) 
+		{
 			std::swap(entries.at(j - 1), entries.at(j));
 		}
 		--j;
@@ -137,7 +154,8 @@ void ScoreSubmit::StoreInFile() {
 
 	hof.clear();
 	hof.open("data/hof.txt", std::ios::out);
-	for (size_t i = 0; i < 10 && i < entries.size(); ++i) {
+	for (size_t i = 0; i < 10 && i < entries.size(); ++i) 
+	{
 		hof << entries.at(i).name << " " << entries.at(i).points << "\n";
 	}
 	hof.close();

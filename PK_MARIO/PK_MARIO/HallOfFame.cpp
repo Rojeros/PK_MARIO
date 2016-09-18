@@ -5,11 +5,13 @@
 
 
 HallOfFame::HallOfFame()
-	: m_is_done(false) {
+	: m_is_done(false) 
+{
 	LoadFromFile();
 }
 
-void HallOfFame::Draw() {
+void HallOfFame::Draw() 
+{
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
@@ -19,7 +21,8 @@ void HallOfFame::Draw() {
 	t.SetSize(0.035, 0.035);
 	double y = 0.7;
 	double x = 0.15;
-	for (size_t i = 0; i < m_entries.size(); ++i) {
+	for (size_t i = 0; i < m_entries.size(); ++i) 
+	{
 		t.DrawText(m_entries.at(i).name, x, y);
 		t.DrawNumber(m_entries.at(i).points, x + 0.4, y, 8);
 		y -= 0.07;
@@ -28,33 +31,46 @@ void HallOfFame::Draw() {
 	SDL_GL_SwapBuffers();
 }
 
-bool HallOfFame::Update(double /* dt */) {
+bool HallOfFame::Update(double /* dt */) 
+{
 	return !IsDone();
 }
 
-void HallOfFame::ProcessEvents() {
+void HallOfFame::ProcessEvents() 
+{
 	SDL_Event event;
-	while (SDL_PollEvent(&event)) {
-		if (event.type == SDL_QUIT) {
+	while (SDL_PollEvent(&event)) 
+	{
+		if (event.type == SDL_QUIT) 
+		{
 			m_is_done = true;
 			break;
 		}
-		else if (event.type == SDL_KEYDOWN) {
+		else if (event.type == SDL_KEYDOWN)
+		{
 			m_is_done = true;
 			break;
 		}
 	}
 }
 
-void HallOfFame::LoadFromFile() {
+bool HallOfFame::IsDone()
+{
+	return m_is_done;
+}
+
+void HallOfFame::LoadFromFile() 
+{
 	std::ifstream in("data/hof.txt");
-	if (!in) {
-		std::cerr << "Nie moge odczytac Hall of Fame\n";
+	if (!in) 
+	{
+		std::cerr << "Cant open Hall of Fame file\n";
 		return;
 	}
 
 	Entry entry;
-	while (in >> entry.name >> entry.points) {
+	while (in >> entry.name >> entry.points) 
+	{
 		m_entries.push_back(entry);
 	}
 }

@@ -3,82 +3,89 @@
 
 #include "StdAfx.h"
 #include "Character.h"
+
+
+/// <summary>	A bullet. </summary>
 class Bullet :
 	public Character
 {
+
+	/// <summary>	Values that represent default moving system. </summary>
 	enum {
 		DefaultXVelocity = 6, DefaultYVelocity = 0,
 		DefaultXAcceleration = 0, DefaultYAcceleration = 0,
-		DefaultTimeToLive = 2   // czas ¿ycia = 2s
+		DefaultTimeToLive = 2   
 	};
 
 public:
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Constructor. </summary>
+	///
+	/// <param name="x">			The x coordinate. </param>
+	/// <param name="y">			The y coordinate. </param>
+	/// <param name="xVelocity">	The x velocity. </param>
+	/// <param name="yVelocity">	The y velocity. </param>
+	///-------------------------------------------------------------------------------------------------
+
 	Bullet(double x, double y, double xVelocity, double yVelocity) :
-		Character(x, y,true,TYPES::PlayerBullet,TYPES::Foreground,1, 0, 0,
-			0, 0),
-		m_time_to_live(DefaultTimeToLive) {
+		Character(x, y, true, TYPES::PlayerBullet, TYPES::Foreground, 1, 0, 0,	0, 0),m_time_to_live(DefaultTimeToLive) 
+	{
 
 		m_vx = xVelocity < 0 ? -DefaultXVelocity : DefaultXVelocity;
 		m_vy = DefaultYVelocity;
 	}
+
+	/// <summary>	Default constructor. </summary>
 	Bullet() :Character(0, 0, 0, TYPES::PlayerBullet, TYPES::Foreground, 0, 0, 0) {}
 
-	 TYPES::FieldType GetType() { return TYPES::PlayerBullet; }
-	 Collisions GetBasicAabb()  {
-		return Collisions(0, 0, .4, .4);
-	}
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Gets the field type. </summary>
+	///
+	/// <returns>	TYPES::PlayerBullet. </returns>
+	///-------------------------------------------------------------------------------------------------
 
-	void SetDefaultMovement() {
-	}
+	TYPES::FieldType GetType();
 
-	void Update(double dt, Level* p_level) {
-		m_right->Update(dt);
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Gets basic aabb collision. </summary>
+	///
+	/// <returns>	The basic aabb collision. </returns>
+	///-------------------------------------------------------------------------------------------------
 
-		// usuñ obiekt je¿eli ¿yje zbyt d³ugo
-		m_time_to_live -= dt;
-		if (m_time_to_live < 0) {
-			SetIsDead(true);
-			return;
-		}
+	Collisions GetBasicAabb();
 
-		// sprawdŸ kolizje
-		CheckCollisionsWithLevel(dt, p_level);
-		SetPosition(GetNextXPosition(dt), GetNextYPosition(dt));
-	}
+	/// <summary>	Sets default movement. </summary>
+	void SetDefaultMovement();
 
-	void CheckCollisionsWithLevel(double dt, Level * p_level) {
-		// czy jednostka koliduje z czymœ od do³u lub od góry
-		if (IsAnyFieldBelowMe(m_x,m_y,dt, p_level) || IsAnyFieldAboveMe(m_x, m_y, dt, p_level)) {
-			SetIsDead(true);
-		}
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Updates this object. </summary>
+	///
+	/// <param name="dt">	  	The delta time. </param>
+	/// <param name="p_level">	[in,out] If non-null, the level. </param>
+	///-------------------------------------------------------------------------------------------------
 
-		// czy jednostka koliduje z czymœ po lewej lub prawej stronie
-		if (IsAnyFieldOnLeft(m_x, m_y, dt, p_level) || IsAnyFieldOnRight(m_x, m_y, dt, p_level)) {
-			SetIsDead(true);
-		}
-	}
-	void SetSprite()
-	{
-		m_right = SetTypeForSprite(TYPES::PlayerBullet, TYPES::None);
-		
-	}
+	void Update(double dt, Level* p_level);
 
-	void Bullet::Draw() {
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Check collisions with level. </summary>
+	///
+	/// <param name="dt">	  	The delta time. </param>
+	/// <param name="p_level">	[in,out] If non-null, the level. </param>
+	///-------------------------------------------------------------------------------------------------
 
-		double height, width;
-		height = m_left->m_renderer->GetTileHeight();
-		width = m_left->m_renderer->GetTileWidth();
+	void CheckCollisionsWithLevel(double dt, Level * p_level);
 
-		double pos_x = m_x * height;
-		double pos_y = m_y * width;
+	/// <summary>	Sets the sprite to objects. </summary>
+	void SetSprite();
 
-			m_right->DrawCurrentFrame(pos_x, pos_y, width, height);
-	
-		}
-	
+	/// <summary>	Draws this object. </summary>
+	void Draw();
+
 
 private:
-	double m_time_to_live;   // czas, który pozosta³ do samozniszczenia
+	/// <summary>	The time to live. </summary>
+	double m_time_to_live;  
 };
 
-#endif // !BULLET_H_
+#endif

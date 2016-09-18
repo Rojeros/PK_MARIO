@@ -4,19 +4,41 @@
 #pragma once
 #include "StdAfx.h"
 
+/// <summary>	A spritedata contains info about Sprites to display on screen. </summary>
 class SpriteData
 {
 protected:
 	
 public:
-	unsigned int frame_count; // liczba klatek w animacji
-	double frame_duration_time;   // czas trwania klatki
-	double left;  // po³o¿enie w poziomie pierwszej klatki animacji w obrazku (w px)
-	double bottom;// po³o¿enie w pionie pierwszej klatki animacji w obrazku (w px)
-	double width; // szerokoœæ klatki w pikselach
-	double height;// wysokoœæ klatki w pikselach
-	bool loop;    // czy animacja ma byæ zapêtlona?
-	TYPES::DisplayLayer layer;       // warstwa, na którym bêdzie rysowany sprite. Im bli¿ej 0, tym bli¿ej obserwatora
+	/// <summary>	counts frames in animation. </summary>
+	unsigned int frame_count;
+	/// <summary>	time of one frames. </summary>
+	double frame_duration_time;
+	/// <summary>	left position of sprite on texture (in px) </summary>
+	double left;
+	/// <summary>	right position of sprite on texture (in px) </summary>
+	double bottom;
+	/// <summary>	width of sprite on texture (in px) </summary>
+	double width;
+	/// <summary>	height of sprite in texture (in px) </summary>
+	double height;
+	/// <summary>	is animation is loop </summary>
+	bool loop;
+	/// <summary>	display layer on screen </summary>
+	TYPES::DisplayLayer layer;
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Constructor. </summary>
+	///
+	/// <param name="frame_count">   	Number of frames. </param>
+	/// <param name="frame_duration">	Duration of the frame. </param>
+	/// <param name="left">			 	left position of sprite on texture (in px). </param>
+	/// <param name="bottom">		 	right position of sprite on texture (in px). </param>
+	/// <param name="width">		 	width of sprite on texture (in px) . </param>
+	/// <param name="height">		 	height of sprite in texture (in px). </param>
+	/// <param name="loop">			 	true to loop. </param>
+	/// <param name="level">		 	display layer on screen . </param>
+	///-------------------------------------------------------------------------------------------------
 
 	SpriteData( size_t frame_count,
 		double frame_duration, double left, double bottom,
