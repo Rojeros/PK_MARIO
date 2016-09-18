@@ -12,11 +12,13 @@ void GameContener::deleteList()
 
 void GameContener::SetPlayer()
 {
+	
+
 	p_level = new Level();
-	p_level->LoadLevelFromFile("data\\1.lvl");
+	p_level->LoadLevelFromFile("data\\" + std::to_string((int)m_entities_to_create[numberOfLevel][0].y) + ".lvl");
 	m_player = new Player(9, 5, true, TYPES::Players, TYPES::PlayerLayer, 4, p_level->GetWidth());
 	m_player->SetSprite();
-	SpriteRenderer::setFilename("data\\tex3.png");
+	SpriteRenderer::setFilename("data\\tex" + std::to_string((int)m_entities_to_create[numberOfLevel][0].x) + ".png");
 	m_stored_player_pos_x = m_player->GetX();
 	try
 	{
@@ -30,6 +32,8 @@ void GameContener::SetPlayer()
 	{
 		std::cout << e;
 	}
+	numberOfLevel = -1;
+	SetLevel();
 }
 
 
@@ -108,19 +112,12 @@ Player * GameContener::GetPLayer()
 	return m_player;
 }
 
-void GameContener::addEnemy(TYPES::FieldType monster)
+void GameContener::addEnemy(double x, double y)
 {
-	Monster * ptr = new Monster(0, 0);
-	monsterList.push_back(new Monster(15, 5));
-	monsterList.push_back(new Monster(17, 5));
-	for (std::vector<Character*>::iterator it = monsterList.begin(); it != monsterList.end(); ++it) {
-		if (static_cast<Monster*>(*it) != NULL) {
-			ptr = static_cast<Monster*>(*it);
+	Monster * ptr = new Monster(x, y);
+	monsterList.push_back(ptr);
+	
 			ptr->SetSprite();
-			ptr->SetSprite();
-			ptr->SetSprite();
-		}
-	}
 	
 }
 
@@ -278,32 +275,20 @@ void GameContener::addBullet()
 
 void GameContener::addBonus(double x, double y, TYPES::BonusType type1)
 {
+
 	monsterList.push_back(new Bonus(x, y, true, TYPES::Bonuses, TYPES::Foreground, type1));
 	if (dynamic_cast<Bonus*>(&*monsterList.back()) != NULL) {
 		Bonus*ptr = dynamic_cast<Bonus*>(&*monsterList.back());
 		ptr->SetSprite();
 	}
-	monsterList.push_back(new Bonus(48, 3, true, TYPES::Bonuses, TYPES::Foreground, TYPES::levelEnd));
-	if (dynamic_cast<Bonus*>(&*monsterList.back()) != NULL) {
-		Bonus*ptr = dynamic_cast<Bonus*>(&*monsterList.back());
-		ptr->SetSprite();
-	}
+
 }
 
-bool GameContener::isLevelcomplete(std::string next_level,std::string atlas,double x,double y)
+bool GameContener::isLevelcomplete()
 {
 	if (m_player->IsLevelCompleted()) 
 	{
-		deleteList();
-		p_level->~Level();
-		p_level = new Level();
-		p_level->LoadLevelFromFile(next_level);
-		m_player->SetPosition(x, y);
-		m_player->LevelCompleted(false);
-		m_stored_player_pos_x = 9;
-		SpriteRenderer::setFilename(atlas);
-		SpriteRenderer::resetTexture();
-
+		SetLevel();
 		return true;
 	}
 	return false;
@@ -319,33 +304,76 @@ void GameContener::Reset()
 	deleteList();
 	p_level->~Level();
 	p_level = new Level();
-	p_level->LoadLevelFromFile("data\\1.lvl");
+	p_level->LoadLevelFromFile("data\\" + std::to_string((int)m_entities_to_create[numberOfLevel][0].y) + ".lvl");
 	m_player->~Player();
-	m_player = new Player(9, 5, true, TYPES::Players, TYPES::PlayerLayer, 4, p_level->GetWidth());
+	m_player = new Player(m_entities_to_create[numberOfLevel][0].x, m_entities_to_create[numberOfLevel][0].y, true, TYPES::Players, TYPES::PlayerLayer, 4, p_level->GetWidth());
 	m_player->SetSprite();
 	m_stored_player_pos_x = 9;
-	SpriteRenderer::setFilename("data\\tex3.png");
+	numberOfLevel = -1;
+	SetLevel();
+}
+
+void GameContener::SetLevel()
+{
+	numberOfLevel++;
+	if (numberOfLevel >= levels)
+		numberOfLevel = 0;
+
+	deleteList();
+	p_level->~Level();
+	p_level = new Level();
+	m_player->LevelCompleted(false);
+	m_stored_player_pos_x = 9;
 	SpriteRenderer::resetTexture();
+
+
+	for (int i = 0; i < m_entities_to_create[numberOfLevel].size(); i++) {
+
+		if (m_entities_to_create[numberOfLevel][i].name == "level")
+		{
+			SpriteRenderer::setFilename("data\\tex" + std::to_string((int)m_entities_to_create[numberOfLevel][i].x) + ".png");
+			p_level->LoadLevelFromFile("data\\" + std::to_string((int)m_entities_to_create[numberOfLevel][i].y) + ".lvl");
+		}else
+		if (m_entities_to_create[numberOfLevel][i].name == "player")
+		{
+			m_player->SetPosition(m_entities_to_create[numberOfLevel][i].x, m_entities_to_create[numberOfLevel][i].y);
+		}else
+		if (m_entities_to_create[numberOfLevel][i].name == "enemy")
+		{
+			addEnemy(m_entities_to_create[numberOfLevel][i].x, m_entities_to_create[numberOfLevel][i].y);
+		}
+		else
+		if (m_entities_to_create[numberOfLevel][i].name == "hp")
+		{
+			addBonus(m_entities_to_create[numberOfLevel][i].x, m_entities_to_create[numberOfLevel][i].y,TYPES::hp);
+		}
+		else
+		if (m_entities_to_create[numberOfLevel][i].name == "levelEnd")
+		{
+			addBonus(m_entities_to_create[numberOfLevel][i].x, m_entities_to_create[numberOfLevel][i].y, TYPES::levelEnd);
+		}
+	}
+
 }
 
 void GameContener::LoadEntitiesFromFile(const std::string & filename)
 {
 	std::ifstream file(filename.c_str());
 	if (!file) {
-		std::cerr << "Nie uda³o siê za³adowaæ pliku " << filename << "\n";
+		std::cerr << "Error on loading init File " << "\n";
 		return;
 	}
 
 	// wczytaj linia po linii
 	const int buffer_size = 1024;
 	char buffer[buffer_size];
-	int size;
+
 
 	file.getline(buffer, buffer_size);
 	std::string line(buffer);
 	std::istringstream iss(line);
-	iss >> size;
-	m_entities_to_create.resize(size);
+	iss >> levels;
+	m_entities_to_create.resize(levels);
 
 	int i = -1;
 	while (file) {
@@ -366,10 +394,10 @@ void GameContener::LoadEntitiesFromFile(const std::string & filename)
 		}
 
 			m_entities_to_create[i].push_back(data);
-			std::cout << "[LoadEntityFromFile] " << i << " " << data.name << ", " << data.x << ", " << data.y << std::endl;
+//			std::cout << "[LoadEntityFromFile] " << i << " " << data.name << ", " << data.x << ", " << data.y << std::endl;
 
 
 
 	}
-
+	numberOfLevel = 0;
 }

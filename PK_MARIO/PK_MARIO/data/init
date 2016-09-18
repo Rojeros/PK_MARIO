@@ -1,5 +1,10 @@
 2
-level 1.lvl tex1.png
+#struct: in first line must be number of levels, 
+#next line must be level -> number of tex[].png, number of [].lvl
+#nex line must be player with coords
+#after in random can be enemy with coords, bonus with coords
+#next level is start from 'level'
+level 3 1
 player 2 2
 enemy 15 5
 enemy 17 5
@@ -8,13 +13,13 @@ enemy 43 3
 enemy 47 3
 hp 3 5
 levelEnd 48 4
-level 2.lvl tex2.png
+level 4 2
 player 3 3
 enemy 15 5
 enemy 17 5
 enemy 35 3
 enemy 43 3
 enemy 47 3
-hp 3 5
-levelEnd 48 4
+hp 4 5
+levelEnd 47 4
 

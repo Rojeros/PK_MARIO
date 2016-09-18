@@ -111,7 +111,7 @@ void App::Update(double dt)
 {
 	if(state==0){
 	game->UpdateScene(dt);
-	game->isLevelcomplete("data\\2.lvl", "data\\tex4.png", 3, 3);
+	game->isLevelcomplete();
 	if (game->isLevelFaild()) 
 	{
 		if (game->GetPLayer()->GetScores() != 0){

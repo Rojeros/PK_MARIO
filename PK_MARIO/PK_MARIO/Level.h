@@ -13,6 +13,7 @@ private:
 	size_t grid_width;
 	size_t grid_height;
 
+
 	std::vector<std::vector<Tile> > map;
 	std::vector< std::vector< Tile *> > m_grid;
 	
@@ -25,6 +26,7 @@ public:
 	void SetLevel(double dx);
 	void DrawLevel(double dx);
 	
+
 	void deleteLevel();
 	size_t GetWidth()   { return m_width; }
 	size_t GetHeight()   { return m_height; }

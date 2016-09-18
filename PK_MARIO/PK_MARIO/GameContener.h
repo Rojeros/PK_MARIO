@@ -22,7 +22,8 @@ class GameContener
 private:
 	
 	std::vector<Character*> monsterList;
-
+	int numberOfLevel;
+	int levels;
 	Level * p_level;
 	Player * m_player;
 	Text t;
@@ -46,16 +47,17 @@ public:
 	void DrawScene();
 	void UpdateScene(double dt);
 	Player * GetPLayer();
-	void addEnemy(TYPES::FieldType monster);
+	void addEnemy(double x, double y);
 	void CheckPlayerEntitiesCollisions(double dt);
 	void CheckCollisionOfOnePair(std::vector< Character* >::iterator fst_entity, TYPES::FieldType fst_type, std::vector<Character*>::iterator snd_entity, TYPES::FieldType snd_type,double dt);
 	void CheckEntityEntityCollisions(double dt);
-	bool GameContener::IsMarkedToDelete(Character * o);
+	bool IsMarkedToDelete(Character * o);
 	void addBullet();
 	void addBonus(double x, double y, TYPES::BonusType type1);
-	bool isLevelcomplete(std::string next_level, std::string atlas, double x, double y);
+	bool isLevelcomplete();
 	bool isLevelFaild();
 	void Reset();
+	void SetLevel();
 	~GameContener() {
 		delete m_player;
 		delete p_level;

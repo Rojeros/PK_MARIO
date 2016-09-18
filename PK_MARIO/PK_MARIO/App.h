@@ -28,8 +28,6 @@ public:
 	{
 		game = new GameContener();
 		game->SetPlayer();
-		game->addEnemy(TYPES::Enemy);
-		game->addBonus(4, 3, TYPES::hp);
 	}
 
 	/// <summary>	Runs window. </summary>
