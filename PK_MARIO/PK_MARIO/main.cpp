@@ -14,8 +14,20 @@
 int main(int argc, char *argv[])
 {
 
-
+	try
+	{
 	App app(600, 400, false);
 	app.Run();
+	}
+	catch (std::string s) 
+	{
+	
+		std::cerr <<"Error"<< s<<"\n";
+	}
+	catch (... ) 
+	{
+		std::cerr << "Critical Error" << "\n";
+	}
+
 	return 0;
 }
