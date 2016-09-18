@@ -71,7 +71,8 @@ public:
 
 	// akcja wywo³ywana. kiedy gracz zakoñczy poziom
 	// (np. odegranie fanfarów, wyœwietlenia napisu, ...
-	void LevelCompleted();
+	void LevelCompleted(bool status);
+	bool IsLevelCompleted();
 
 	bool HasCompletedCurrentLevel()   {
 		return m_is_level_completed;
@@ -83,7 +84,7 @@ public:
 	void CollisionUnderPlayer(std::vector<Character*>::iterator it);
 
 
-	void setSprite(Sprite & data, std::string name, TYPES::PlayerState state);
+	void SetSprite();
 	bool IsImmortal()   { return m_is_immortal; }
 
 	

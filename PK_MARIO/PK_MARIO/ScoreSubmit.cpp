@@ -18,11 +18,11 @@ void ScoreSubmit::Draw() {
 	glLoadIdentity();
 
 	Text t(0.08, 0.08);
-	t.DrawText("gratulacje", 0.1, 0.9);
+	t.DrawText("Good job", 0.1, 0.9);
 	t.SetSize(0.04, 0.04);
-	t.DrawText("punkty: " + t.IntToStr(m_points), 0.1, 0.8);
+	t.DrawText("Points: " + t.IntToStr(m_points), 0.1, 0.8);
 	t.SetSize(0.05, 0.05);
-	t.DrawText("wpisz swoje imie", 0.1, 0.7);
+	t.DrawText("Your's Name: ", 0.1, 0.7);
 
 	t.DrawText(m_player_nickname, 0.25, 0.6);
 
@@ -53,6 +53,11 @@ std::pair<double, double> ScoreSubmit::LetterPosition(char ch) {
 
 bool ScoreSubmit::Update(double /* dt */) {
 	return !IsDone();
+}
+
+void ScoreSubmit::setScore(int score)
+{
+	m_points = score;
 }
 
 void ScoreSubmit::ProcessEvents() {

@@ -36,7 +36,7 @@ public:
 	virtual int GetScoresWhenKilled()   { return 0; }
 	 void Update(double dt,Level * p_level);
 	void Draw();
-	void setSprite(Sprite & data, std::string name, TYPES::CharacterState state);
+	void SetSprite();
 	bool IsDead()   { return m_is_dead; }
 	bool IsAlive()   { return !m_is_dead; }
 	void SetIsDead(bool is_dead = true) { m_is_dead = is_dead; }

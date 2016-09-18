@@ -21,6 +21,7 @@ public:
 		m_vx = xVelocity < 0 ? -DefaultXVelocity : DefaultXVelocity;
 		m_vy = DefaultYVelocity;
 	}
+	Bullet() :Character(0, 0, 0, TYPES::PlayerBullet, TYPES::Foreground, 0, 0, 0) {}
 
 	 TYPES::FieldType GetType() { return TYPES::PlayerBullet; }
 	 Collisions GetBasicAabb()  {
@@ -56,14 +57,24 @@ public:
 			SetIsDead(true);
 		}
 	}
-	void setSprite(Sprite & data, std::string name, TYPES::FieldType state)
+	void SetSprite()
 	{
-		SpriteLoader::Insert(name, data);
+		m_right = SetTypeForSprite(TYPES::PlayerBullet, TYPES::None);
+		
+	}
 
-			m_right = SpriteLoader::Get(name);
-			m_state = TYPES::GoingRight;
+	void Bullet::Draw() {
+
+		double height, width;
+		height = m_left->m_renderer->GetTileHeight();
+		width = m_left->m_renderer->GetTileWidth();
+
+		double pos_x = m_x * height;
+		double pos_y = m_y * width;
+
+			m_right->DrawCurrentFrame(pos_x, pos_y, width, height);
+	
 		}
-
 	
 
 private:

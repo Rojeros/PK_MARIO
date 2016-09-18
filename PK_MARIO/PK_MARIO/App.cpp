@@ -1,5 +1,4 @@
 #include "StdAfx.h"
-#include "HallOfFame.h"
 #include "App.h"
 
 void App::ProcessEvents()
@@ -8,7 +7,7 @@ void App::ProcessEvents()
 	{
 		return;
 	}
-
+	
 	// przyjrzyj zdarzenia
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
@@ -58,6 +57,7 @@ void App::ProcessEvents()
 		{
 			game->GetPLayer()->StopRight();
 		}
+
 	}
 }
 
@@ -77,23 +77,21 @@ void App::Run()
 	glEnable(GL_ALPHA_TEST); // niewyœwietlanie przezroczystych fragmentów sprite'a
 	glAlphaFunc(GL_GEQUAL, 0.1);
 
-	//  std::string atlas_filename = "data/tex.png";
-	//Engine& engine = Engine::Get();
-//	engine.Load();
-	//engine.GetRenderer()->LoadTexture(atlas_filename);
-//	m_player->SetSprites(
-//		SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_left"))),
-//		SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_right"))),
-//		SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_stop"))));
-
 	// main loop
 	HallOfFame hof;
 	is_done = false;
 	size_t last_ticks = SDL_GetTicks();
 	while (!is_done)
 	{
-		ProcessEvents();
-
+		if (state == 0) {
+			ProcessEvents();
+		}
+		if (state == 1) {
+			scoreSubmit.ProcessEvents();
+		}
+		if (state == 2) {
+			hallOfFame.ProcessEvents();
+		}
 		// time update
 		size_t ticks = SDL_GetTicks();
 		double delta_time = (ticks - last_ticks) / 1000.0;
@@ -111,13 +109,44 @@ void App::Run()
 
 void App::Update(double dt)
 {
+	if(state==0){
 	game->UpdateScene(dt);
-//	m_player->Update(dt);
+	game->isLevelcomplete("data\\2.lvl", "data\\tex4.png", 3, 3);
+	if (game->isLevelFaild()) 
+	{
+		if (game->GetPLayer()->GetScores() != 0){
+			state = 1;
+			scoreSubmit.setScore(game->GetPLayer()->GetScores());
+		}
+		else 
+		{
+			state = 2;
+		}
+	}
+	}
+	if (state == 1){
+		if (scoreSubmit.IsDone())
+			state=2;
+	}
+	if (state == 2){
+		if (hallOfFame.IsDone())
+			state = 3;
+}
+	if (state == 3) {
+		game->Reset();
+			state = 0;
+	}
 }
 
 void App::Draw()
 {
+	if(state==0)
 	game->DrawScene();
+	if (state == 1)
+		scoreSubmit.Draw();
+	if (state == 2)
+		hallOfFame.Draw();
+
 }
 
 void App::Resize(size_t width, size_t height)

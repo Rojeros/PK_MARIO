@@ -2,6 +2,8 @@
 #define FIELD_H_
 class Level;
 #include "StdAfx.h"
+#include "SpriteInserter.h"
+
 class Field
 {
 protected:
@@ -22,6 +24,7 @@ protected:
 public:
 virtual	void Draw()=0;
 virtual void Update(double dt, Level * p_level)=0;
+virtual void SetSprite()=0;
 	bool isExist();
 	void SetX(double newx) { m_x = newx; }
 	void SetY(double newy) { m_y = newy; }

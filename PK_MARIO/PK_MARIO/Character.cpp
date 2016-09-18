@@ -1,20 +1,11 @@
 #include "StdAfx.h"
 #include "Character.h"
 
-void Character::setSprite(Sprite & data, std::string name, TYPES::CharacterState state)
+void Character::SetSprite()
 {
-	SpriteLoader::Insert(name, data);
-	switch (state) {
-	case TYPES::GoingLeft:
-		m_left = SpriteLoader::Get(name);
-		break;
-	case TYPES::GoingRight:
-		m_right = SpriteLoader::Get(name);
-		break;
-	case TYPES::Standing:
-		m_stop = SpriteLoader::Get(name);
-		break;
-	}
+	m_right = SetTypeForSprite(TYPES::Character, TYPES::GoingRight);
+	m_left = SetTypeForSprite(TYPES::Character, TYPES::GoingLeft);
+	m_stop = SetTypeForSprite(TYPES::Character, TYPES::Standing);
 
 
 }
@@ -66,13 +57,13 @@ void Character::Update(double dt, Level * p_level)
 
 	// uaktualnij animacjê
 	switch (m_state) {
-	case TYPES::Stand:
+	case TYPES::Standing:
 		m_stop->Update(dt);
 		break;
-	case TYPES::GoLeft:
+	case TYPES::GoingRight:
 		m_left->Update(dt);
 		break;
-	case TYPES::GoRight:
+	case TYPES::GoingLeft:
 		m_right->Update(dt);
 		break;
 	}

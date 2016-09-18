@@ -17,6 +17,9 @@ public:
 	{
 		SetDefaultMovement();
 	};
+	Bonus() :Character::Character(0, 0, 0, TYPES::Bonuses, TYPES::Background, 0, 0, 0), bonusType(TYPES::hp), changeDirectionX(1), changeDirectionY(-1), timer(0)
+	{
+	};
 	~Bonus();
 	TYPES::BonusType getBonusType();
 	TYPES::FieldType GetType() { return TYPES::Bonuses; }
@@ -50,12 +53,11 @@ double GetNextYPosition(double dt)
 		}
 	}
 
-	void setSprite(Sprite & data, std::string name, TYPES::FieldType state)
+	void SetSprite()
 	{
-		SpriteLoader::Insert(name, data);
+		m_right = SetTypeForSprite(TYPES::Bonuses, TYPES::hp);
+		m_left = SetTypeForSprite(TYPES::Bonuses, TYPES::levelEnd);
 
-		m_right = SpriteLoader::Get(name);
-		m_state = TYPES::GoingRight;
 	}
 	void Update(double dt, Level* p_level);
 	void Draw();

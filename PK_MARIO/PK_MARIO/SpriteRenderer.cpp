@@ -66,6 +66,11 @@ void SpriteRenderer::SetTileSize(double width, double height)
 	m_tile_height = height;
 }
 
+void SpriteRenderer::resetTexture()
+{
+	m_texture =0;
+}
+
 void SpriteRenderer::LoadTexture()
 {
 	// za³aduj z pliku

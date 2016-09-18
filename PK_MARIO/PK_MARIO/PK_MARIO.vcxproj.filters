@@ -81,6 +81,9 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SpriteInserter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdAfx.h">
@@ -142,6 +145,9 @@
     </ClInclude>
     <ClInclude Include="Bullet.h">
       <Filter>Header Files\inheritance</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteInserter.h">
+      <Filter>Header Files\sprites</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

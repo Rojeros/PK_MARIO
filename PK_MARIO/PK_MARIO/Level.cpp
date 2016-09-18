@@ -73,6 +73,7 @@ void Level::SetLevel(double dx)
 			m_grid[x][y] = &map[draw_x][draw_y];
 		}
 	}
+	map[0][0].SetSprite();
 }
 
 void Level::DrawLevel(double dx)
@@ -125,4 +126,10 @@ void Level::DrawLevel(double dx)
 		}
 	}
 	glPopMatrix();
+}
+
+void Level::deleteLevel()
+{
+	map.clear();
+	m_grid.clear();
 }

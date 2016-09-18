@@ -13,6 +13,9 @@ public:
 	Monster(double x, double y) :
 		Character(x, y,true,TYPES::Enemy,TYPES::Foreground,1, DefaultXVelocity, DefaultYVelocity, DefaultXAcceleration, DefaultYAcceleration) {
 	}
+	Monster() :
+		Character(0, 0, false, TYPES::Enemy, TYPES::Foreground, 1, DefaultXVelocity, DefaultYVelocity, DefaultXAcceleration, DefaultYAcceleration) {
+	}
 
 	int GetScoresWhenKilled()   { return 100; }
 
@@ -21,21 +24,11 @@ public:
 	}
 	TYPES::FieldType GetType()  ;
 
-	void setSprite(Sprite & data, std::string name, TYPES::MonsterState state)
+	void SetSprite()
 	{
-		SpriteLoader::Insert(name, data);
-		switch (state) {
-		case TYPES::GoLeft:
-			m_left = SpriteLoader::Get(name);
-			break;
-		case TYPES::GoRight:
-			m_right = SpriteLoader::Get(name);
-			break;
-		case TYPES::Stand:
-			m_stop = SpriteLoader::Get(name);
-			break;
-		}
-
+		m_right = SetTypeForSprite(TYPES::Enemy, TYPES::GoingRight);
+		m_left = SetTypeForSprite(TYPES::Enemy, TYPES::GoingLeft);
+		m_stop = SetTypeForSprite(TYPES::Enemy, TYPES::Standing);
 	}
 	void CheckCollisionsWithLevel(double dt,  Level*level) {
 		// ruszaj siê zamiast staæ

@@ -1,0 +1,20 @@
+2
+level 1.lvl tex1.png
+player 2 2
+enemy 15 5
+enemy 17 5
+enemy 35 3
+enemy 43 3
+enemy 47 3
+hp 3 5
+levelEnd 48 4
+level 2.lvl tex2.png
+player 3 3
+enemy 15 5
+enemy 17 5
+enemy 35 3
+enemy 43 3
+enemy 47 3
+hp 3 5
+levelEnd 48 4
+

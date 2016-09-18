@@ -11,12 +11,12 @@ private:
 	};
 
 public:
-	explicit ScoreSubmit(size_t points);
+	ScoreSubmit(size_t points);
 
 	void ProcessEvents();
 	void Draw();
 	bool Update(double dt);
-
+	void setScore(int score);
 	bool IsDone()   { return m_is_done; }
 
 

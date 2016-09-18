@@ -29,17 +29,19 @@ private:
 	/// <summary>	The stored player position x coordinate. </summary>
 	double m_stored_player_pos_x;
 	int m_stored_player_live;
-	
-	
+	std::vector< std::vector<LevelEntityData>>  m_entities_to_create;
+	void LoadEntitiesFromFile(const std::string& filename);
+
 
 public:
 	
 	GameContener() : 	m_stored_player_pos_x(1.0)
 	{
 		t.SetTimer(5);
+		LoadEntitiesFromFile("data\\init");
 	};
 
-	
+	void deleteList();
 	void SetPlayer();
 	void DrawScene();
 	void UpdateScene(double dt);
@@ -51,7 +53,9 @@ public:
 	bool GameContener::IsMarkedToDelete(Character * o);
 	void addBullet();
 	void addBonus(double x, double y, TYPES::BonusType type1);
-
+	bool isLevelcomplete(std::string next_level, std::string atlas, double x, double y);
+	bool isLevelFaild();
+	void Reset();
 	~GameContener() {
 		delete m_player;
 		delete p_level;

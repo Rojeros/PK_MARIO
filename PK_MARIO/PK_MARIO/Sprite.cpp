@@ -1,7 +1,6 @@
 #include "StdAfx.h"
 #include "Sprite.h"
 
-
 void Sprite::SetCurrentFrame(size_t frame_num)
 {
 	m_current_frame = frame_num;

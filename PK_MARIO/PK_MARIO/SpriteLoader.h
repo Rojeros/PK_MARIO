@@ -10,9 +10,9 @@ class SpriteLoader
 {
 public:
 	SpriteLoader();
-	Sprite* Get(std::string name);
-	bool Contains(std::string name) ;
-	void Insert(std::string name, Sprite& data);
+	static Sprite* Get(std::string name);
+	static bool Contains(std::string name) ;
+	static void Insert(std::string name, Sprite& data);
 protected:
 	static std::map<std::string, Sprite> m_data;
 

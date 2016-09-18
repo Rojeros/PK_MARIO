@@ -99,21 +99,12 @@ void Player::CollisionUnderPlayer(std::vector<Character*>::iterator it) {
 	AddScores((*it)->GetScoresWhenKilled() * 2);
 	(*it)->KilledByPlayer();
 }
-void Player::setSprite(Sprite & data, std::string name, TYPES::PlayerState state)
+void Player::SetSprite()
 {
-	SpriteLoader::Insert(name, data);
-	switch (state) {
-	case TYPES::GoLeft:
-		m_left = SpriteLoader::Get(name);
-		break;
-	case TYPES::GoRight:
-		m_right = SpriteLoader::Get(name);
-		break;
-	case TYPES::Stand:
-		m_stop = SpriteLoader::Get(name);
-		break;
-	}
-
+	m_right = SetTypeForSprite(TYPES::Players, TYPES::GoingRight);
+	m_left = SetTypeForSprite(TYPES::Players, TYPES::GoingLeft);
+	m_stop = SetTypeForSprite(TYPES::Players, TYPES::Standing);
+	
 }
 
 bool Player::MoveMap()
@@ -194,6 +185,16 @@ void Player::LooseLife()
 	m_is_immortal = true;
 	m_immortal_duration = 0;
 	setCoord(3, 4);
+}
+
+void Player::LevelCompleted(bool status)
+{
+	m_is_level_completed = status;
+}
+
+bool Player::IsLevelCompleted()
+{
+	return m_is_level_completed;
 }
 
 

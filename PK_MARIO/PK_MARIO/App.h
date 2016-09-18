@@ -5,9 +5,8 @@
 #include "Player.h"
 #include "Sprite.h"
 #include "GameContener.h"
-//#include "Level.h"
-//#include "SpriteGrid.h"
-//#include "Engine.h"
+#include "HallOfFame.h"
+#include "ScoreSubmit.h"
 
 /// <summary>	Main window of Application </summary>
 class App
@@ -23,11 +22,11 @@ public:
 	App(size_t win_width, size_t win_height, bool fullscreen_mode) :
 		m_window_width(win_width),
 		m_window_height(win_height),
-		m_fullscreen(fullscreen_mode)
+		m_fullscreen(fullscreen_mode),
+		state(0),scoreSubmit(0),hallOfFame()
 	
 	{
 		game = new GameContener();
-		
 		game->SetPlayer();
 		game->addEnemy(TYPES::Enemy);
 		game->addBonus(4, 3, TYPES::hp);
@@ -73,7 +72,9 @@ private:
 	/// <summary>	The screen. </summary>
 	SDL_Surface* m_screen;
 	GameContener * game;
-
+	int state;
+	ScoreSubmit scoreSubmit;
+	HallOfFame hallOfFame;
 };
 
 
