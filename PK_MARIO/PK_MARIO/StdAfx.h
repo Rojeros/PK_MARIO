@@ -45,10 +45,7 @@
 #include <SDL_mixer.h>
 #include <SDL_image.h>
 
-#include "freeimage\FreeImage.h"
 #undef main
-#include <boost\shared_ptr.hpp>
-#include <boost\enable_shared_from_this.hpp>
 
 #include <string>
 #include <vector> 
