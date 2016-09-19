@@ -5,9 +5,9 @@
 
 void GameContener::deleteList()
 {
-	for (int i = 0; i < monsterList.size(); i++)
-		delete monsterList[i];
-	monsterList.clear();
+	for (int i = 0; i < objectList.size(); i++)
+		delete objectList[i];
+	objectList.clear();
 }
 
 void GameContener::SetPlayer()
@@ -19,7 +19,7 @@ void GameContener::SetPlayer()
 	m_player = new Player(9, 5, true, TYPES::Players, TYPES::PlayerLayer, 4, p_level->GetWidth());
 	m_player->SetSprite();
 	SpriteRenderer::setFilename("data\\tex" + std::to_string((int)m_entities_to_create[numberOfLevel][0].x) + ".png");
-	m_stored_player_pos_x = m_player->GetX();
+	m_stored_player_pos_x = 9;
 	m_stored_player_live = m_player->GetLifesCount();
 	try
 	{
@@ -62,7 +62,7 @@ void GameContener::DrawScene()
 		p_level->SetLevel(m_stored_player_pos_x);
 		p_level->DrawLevel(m_stored_player_pos_x);
 		m_player->Draw();
-		for (std::vector<Character*>::iterator it = monsterList.begin(); it != monsterList.end(); ++it)
+		for (std::vector<Character*>::iterator it = objectList.begin(); it != objectList.end(); ++it)
 		{
 			if ((*it)->IsAlive())
 			{
@@ -87,21 +87,23 @@ void GameContener::UpdateScene(double dt)
 {
 	t.Time(dt);
 	m_player->SetDefaultMovement();
-
-	CheckPlayerEntitiesCollisions(dt);
-	CheckEntityEntityCollisions(dt);
-	m_player->Update(dt, p_level);
-
+	
 	if (m_player->isBulletFired())
 	{
 		addBullet();
 	}
 
+	CheckPlayerEntitiesCollisions(dt);
+	CheckEntityEntityCollisions(dt);
+	m_player->Update(dt, p_level);
 
-	monsterList.erase(
-		std::remove_if(monsterList.begin(), monsterList.end(), [](Character * a) {return (*a).IsDead(); }), monsterList.end());
+	
 
-	for (std::vector<Character*>::iterator it = monsterList.begin(); it != monsterList.end(); ++it)
+
+	objectList.erase(
+		std::remove_if(objectList.begin(), objectList.end(), [](Character * a) {return (*a).IsDead(); }), objectList.end());
+
+	for (std::vector<Character*>::iterator it = objectList.begin(); it != objectList.end(); ++it)
 	{
 		if ((*it)->IsAlive())
 		{
@@ -122,7 +124,7 @@ Player * GameContener::GetPLayer()
 void GameContener::addEnemy(double x, double y)
 {
 	Monster * ptr = new Monster(x, y);
-	monsterList.push_back(ptr);
+	objectList.push_back(ptr);
 
 	ptr->SetSprite();
 
@@ -134,7 +136,7 @@ void GameContener::CheckPlayerEntitiesCollisions(double dt) {
 	Collisions player_box_x = m_player->GetNextHorizontalAabb(dt);
 	Collisions player_box_y = m_player->GetNextVerticalAabb(dt);
 
-	for (std::vector<Character*>::iterator it = monsterList.begin(); it != monsterList.end(); ++it) {
+	for (std::vector<Character*>::iterator it = objectList.begin(); it != objectList.end(); ++it) {
 
 		if ((*it)->GetType() == TYPES::PlayerBullet) {
 			continue;
@@ -223,7 +225,7 @@ void GameContener::CheckEntityEntityCollisions(double dt)
 	std::vector<Character*>::iterator out_entity, inn_entity;
 
 	TYPES::FieldType out_type, inn_type;
-	for (outer = monsterList.begin(); outer != monsterList.end(); ++outer)
+	for (outer = objectList.begin(); outer != objectList.end(); ++outer)
 	{
 		out_entity = outer;
 		out_type = (*outer)->GetType();
@@ -233,7 +235,7 @@ void GameContener::CheckEntityEntityCollisions(double dt)
 		}
 		inner = outer;
 		++inner;
-		for (; inner != monsterList.end(); ++inner)
+		for (; inner != objectList.end(); ++inner)
 		{
 			inn_entity = inner;
 			inn_type = (*inn_entity)->GetType();
@@ -269,9 +271,9 @@ void GameContener::addBullet()
 		x = m_player->GetXVelocity() < 0 ? m_player->GetX() - .3 : m_player->GetX() + .7;
 		xvel = m_player->GetXVelocity();
 	}
-	monsterList.push_back(new Bullet(x, m_player->GetY(), xvel, 0));
-	if (dynamic_cast<Bullet*>(&*monsterList.back()) != NULL) {
-		Bullet*ptr = dynamic_cast<Bullet*>(&*monsterList.back());
+	objectList.push_back(new Bullet(x, m_player->GetY(), xvel, 0));
+	if (dynamic_cast<Bullet*>(&*objectList.back()) != NULL) {
+		Bullet*ptr = dynamic_cast<Bullet*>(&*objectList.back());
 		ptr->SetSprite();
 	}
 
@@ -281,10 +283,10 @@ void GameContener::addBullet()
 void GameContener::addBonus(double x, double y, TYPES::BonusType type1)
 {
 
-	monsterList.push_back(new Bonus(x, y, true, TYPES::Bonuses, TYPES::Foreground, type1));
-	if (dynamic_cast<Bonus*>(&*monsterList.back()) != NULL)
+	objectList.push_back(new Bonus(x, y, true, TYPES::Bonuses, TYPES::Foreground, type1));
+	if (dynamic_cast<Bonus*>(&*objectList.back()) != NULL)
 	{
-		Bonus*ptr = dynamic_cast<Bonus*>(&*monsterList.back());
+		Bonus*ptr = dynamic_cast<Bonus*>(&*objectList.back());
 		ptr->SetSprite();
 	}
 

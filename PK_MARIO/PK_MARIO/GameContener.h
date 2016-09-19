@@ -23,7 +23,7 @@ class GameContener
 private:
 	
 	/// <summary>	List of extra objects. </summary>
-	std::vector<Character*> monsterList;
+	std::vector<Character*> objectList;
 	/// <summary>	Number of current  level. </summary>
 	int numberOfLevel;
 	/// <summary>	The max level in game. </summary>
@@ -125,8 +125,8 @@ public:
 	~GameContener() {
 		delete m_player;
 		delete p_level;
-		for (int i = 0; i < monsterList.size(); i++)
-			delete monsterList[i];
+		for (int i = 0; i < objectList.size(); i++)
+			delete objectList[i];
 	};
 	/// <summary>	Sets the player. </summary>
 	void SetPlayer();

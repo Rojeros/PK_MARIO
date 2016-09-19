@@ -62,6 +62,16 @@ void ScoreSubmit::setScore(int score)
 	m_points = score;
 }
 
+bool ScoreSubmit::IsDone()
+{
+	return m_is_done;
+}
+
+void ScoreSubmit::NotDone()
+{
+	m_is_done = false;
+}
+
 void ScoreSubmit::ProcessEvents() 
 {
 	SDL_Event event;

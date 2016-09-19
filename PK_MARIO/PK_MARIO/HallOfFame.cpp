@@ -59,6 +59,11 @@ bool HallOfFame::IsDone()
 	return m_is_done;
 }
 
+void HallOfFame::NotDone()
+{
+	m_is_done = false;
+}
+
 void HallOfFame::LoadFromFile() 
 {
 	std::ifstream in("data/hof.txt");

@@ -125,13 +125,20 @@ void App::Update(double dt)
 	if (state == 1){
 		if (scoreSubmit.IsDone())
 			state=2;
+		
+
 	}
 	if (state == 2){
 		if (hallOfFame.IsDone())
+		{
+			scoreSubmit.NotDone();
+
 			state = 3;
+		}
 }
 	if (state == 3) {
 		game->Reset();
+		hallOfFame.NotDone();
 			state = 0;
 	}
 }
