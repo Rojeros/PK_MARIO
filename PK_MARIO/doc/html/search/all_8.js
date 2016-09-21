@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['insert',['Insert',['../class_sprite_loader.html#a45ae7abbd6dfc3f84edb8db3911e3698',1,'SpriteLoader']]],
+  ['inttostr',['IntToStr',['../class_text.html#a65de74dca6e467d53b984da8e3ea1891',1,'Text']]],
+  ['isalive',['IsAlive',['../class_character.html#a18095520ae360be2d6fa1b2abdf2a2bf',1,'Character']]],
+  ['isanyfieldaboveme',['IsAnyFieldAboveMe',['../class_character.html#aab2ee2f919d862e3ffd915dab84fdc23',1,'Character']]],
+  ['isanyfieldbelowme',['IsAnyFieldBelowMe',['../class_character.html#a0e323cf6cebdc17b9c976cb6f6e78853',1,'Character']]],
+  ['isanyfieldonleft',['IsAnyFieldOnLeft',['../class_character.html#a679b2f3b193db1afe5f81e33494b70d0',1,'Character']]],
+  ['isanyfieldonright',['IsAnyFieldOnRight',['../class_character.html#a239cf9172bed97cec27f3affafa5eca1',1,'Character']]],
+  ['isbulletfired',['isBulletFired',['../class_player.html#a059e4abf6ce3324066343fdb6ec667bf',1,'Player']]],
+  ['isdead',['IsDead',['../class_character.html#ab85af93906a33ef841efec79e082fa42',1,'Character']]],
+  ['isdone',['IsDone',['../class_hall_of_fame.html#afda6cb739c3040fd667c7bbf56d91817',1,'HallOfFame::IsDone()'],['../class_score_submit.html#a3665638d4ad61120bb9ebee87692a514',1,'ScoreSubmit::IsDone()']]],
+  ['isexist',['isExist',['../class_field.html#a382432215d84a4fc05003762c7a37267',1,'Field']]],
+  ['isimmortal',['IsImmortal',['../class_player.html#aa5744c4c6749bf29660a40e095b62373',1,'Player']]],
+  ['islevelcomplete',['isLevelcomplete',['../class_game_contener.html#a35d13f7a272c16024be7d1973e980bab',1,'GameContener']]],
+  ['islevelcompleted',['IsLevelCompleted',['../class_player.html#a3f31c9b97f70e7c03c0c189cce3108a8',1,'Player']]],
+  ['islevelfaild',['isLevelFaild',['../class_game_contener.html#aa2d6844e8b25e73df7024b4559fe929b',1,'GameContener']]],
+  ['isonleftof',['IsOnLeftOf',['../class_collisions.html#ad94cde41c93b0e16e0659f625fdcc563',1,'Collisions']]],
+  ['isonrightof',['IsOnRightOf',['../class_collisions.html#a2eb9934af175872fb7496ac506db50d2',1,'Collisions']]],
+  ['isover',['IsOver',['../class_collisions.html#ad3cee891d036c81ba8a57938583ad551',1,'Collisions']]],
+  ['isunder',['IsUnder',['../class_collisions.html#a9741a2f34003363c66dfd9572afa67d7',1,'Collisions']]]
+];
